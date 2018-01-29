@@ -9,7 +9,7 @@ USER root
 RUN apt-get update
 
 # install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
-RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev scons
+RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev scons dvipng
 
 # Install JAGS
 RUN apt-get install -y jags
@@ -63,11 +63,15 @@ RUN chown -R $NB_USER ${HOME}/DNest4
 RUN cd ${HOME}/DNest4/python && python setup.py install --prefix=/opt/conda \
     && rm -rf build && rm -rf dist && rm -rf dnest4.egg-info && rm dnest4/_dnest4.cpp
 
+# set working directory as "notebooks"
+WORKDIR /notebooks
+
+# change ownership of /notebooks so that notebooks in it can be saved and checkpointed
+RUN chown -R $NB_USER /notebooks
+
 # switch back to non-root user
 USER $NB_USER
 
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment)
 RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; pip install numpy; pip install scipy; pip install matplotlib; pip install corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; ipython kernel install --user"
 
-# set working directory as "notebooks"
-WORKDIR /notebooks
