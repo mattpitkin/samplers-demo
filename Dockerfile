@@ -61,14 +61,12 @@ ENV PYTHONPATH /samplers/PolyChord/PyPolyChord
 RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
 RUN cd /samplers/DNest4 && scons install && cd python && python setup.py install --prefix=/opt/conda && cd /samplers
 
-# switch back to non-root user
-#USER $NB_USER
-
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment)
-#RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; pip install numpy; pip install scipy; pip install matplotlib; pip install corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd /samplers/DNest4/python; python setup.py install; cd; ipython kernel install --user"
 RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; pip install numpy; pip install scipy; pip install matplotlib; pip install corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd /samplers/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd"
 
+# switch back to non-root user
 USER $NB_USER
 RUN /bin/bash -c "ipython kernel install --user"
 
+# set working directory as "notebooks"
 WORKDIR /notebooks
