@@ -105,5 +105,5 @@ mkdir ${HOME}/notebooks
 Now run the Docker image ([setting](https://github.com/jupyter/docker-stacks/tree/master/minimal-notebook#docker-options) `NB_UID=1001` should give the user ID of yourself if you are set as the owner of `${HOME}/notebooks`, but this requires that the `--user root` value is also set):
 
 ```bash
-docker run -it -v ${HOME}/notebooks:/notebooks -e NB_UID=1001 --user root --rm -p 8888:8888 mattpitkin/samplers:latest
+docker run -it -v ${HOME}/notebooks:/home/jovyan/work -e NB_UID=1001 --user root --rm -p 8888:8888 mattpitkin/samplers:latest
 ```
