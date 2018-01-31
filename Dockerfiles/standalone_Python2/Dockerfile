@@ -1,0 +1,75 @@
+FROM ubuntu:xenial
+# installs Ubuntu 16.04
+
+WORKDIR /samplers
+
+### Distribution package installs
+RUN apt-get update
+
+# install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
+RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng
+
+# install light(ish) weight LaTeX
+RUN apt-get install -y --no-install-recommends texlive texlive-latex-extra
+
+# install pip
+RUN apt-get install -y python-pip
+
+# Install JAGS
+RUN apt-get install -y jags
+
+# clean things up
+RUN apt-get -y autoremove \
+    && apt-get -y clean
+
+### Python modules installed via conda and pip
+RUN pip install --upgrade pip
+
+# Install numpy, scipy, matplotlib and corner
+RUN pip install --trusted-host pypi.python.org numpy scipy matplotlib corner
+
+# Install samplers
+# Install PyJAGS from PyPI
+RUN pip install --trusted-host pypi.python.org pyjags
+
+# Install emcee
+RUN pip install --trusted-host pypi.python.org emcee
+
+# Install PyStan
+RUN pip install --trusted-host pypi.python.org pystan
+
+# Install PyMC3
+RUN pip install --trusted-host pypi.python.org pymc3
+
+# Install Nestle
+RUN pip install --trusted-host pypi.python.org nestle
+
+# Install CPNest
+RUN pip install --trusted-host pypi.python.org cpnest
+
+# Install MultiNest 
+ADD MultiNest_v3.10_CMake.tar.gz /samplers
+RUN cd MultiNest_v3.10_CMake/multinest/build \
+    && cmake .. && make && make install && cd
+
+# Install PyMultiNest
+RUN pip install --trusted-host pypi.python.org pymultinest
+
+# Install DNest4 (and clean up so that Python2 install can also proceed)
+RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
+RUN cd /samplers/DNest4/python && python setup.py install --prefix=/usr/local
+
+# Add PolyChord (don't install for Python 3 as it does not work yet)
+ADD PolyChord_v1.9.tar.gz /samplers
+
+# add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
+RUN cd /samplers/PolyChord; make MPI= PyPolyChord
+
+# set unlimited stack size for PolyChord
+RUN echo "ulimit -s unlimited" >> ${HOME}/.bashrc
+
+# add global environment variables
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
+ENV PYTHONPATH /samplers/PolyChord/PyPolyChord
+
+

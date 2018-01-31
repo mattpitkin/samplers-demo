@@ -1,3 +1,5 @@
-MultiNest_v3.10_CMake.tar.gz
-PolyChord_v1.9.tar.gz
+Dockerfiles/MultiNest_v3.10_CMake.tar.gz
+Dockerfiles/PolyChord_v1.9.tar.gz
 chain*.txt
+examples/*.png
+examples/polychord
