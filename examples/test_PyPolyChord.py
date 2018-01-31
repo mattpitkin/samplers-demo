@@ -91,7 +91,7 @@ fileroot = 'straightline'                          # output file name
 broot = os.path.join(basedir, fileroot)
 
 # set an unlimited stack-size of PolyChord
-curlimit = resource.getrlimit() # get current stack resource size
+curlimit = resource.getrlimit(resource.RLIMIT_STACK) # get current stack resource size
 resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY,resource.RLIM_INFINITY)) # set to unlimited
 
 # run nested sampling
