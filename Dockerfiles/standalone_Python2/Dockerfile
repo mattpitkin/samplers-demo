@@ -65,9 +65,6 @@ ADD PolyChord_v1.9.tar.gz /samplers
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
 RUN cd /samplers/PolyChord; make MPI= PyPolyChord
 
-# set unlimited stack size for PolyChord
-RUN echo "ulimit -s unlimited" >> ${HOME}/.bashrc
-
 # add global environment variables
 ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
 ENV PYTHONPATH /samplers/PolyChord/PyPolyChord

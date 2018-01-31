@@ -126,6 +126,8 @@ postsamples = sampler.chain[:, Nburnin:, :].reshape((-1, ndims))
 
 # plot posterior samples (if corner.py is installed)
 try:
+    import matplotlib as mpl
+    mpl.use("Agg") # force Matplotlib backend to Agg
     import corner # import corner.py
 except ImportError:
     sys.exit(1)

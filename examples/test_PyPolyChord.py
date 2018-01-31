@@ -11,6 +11,7 @@ import os
 import sys
 from scipy.special import ndtri
 import numpy as np
+import resource
 
 # import PolyChord
 import PyPolyChord as PolyChord
@@ -89,8 +90,15 @@ if not os.path.isdir(basedir):
 fileroot = 'straightline'                          # output file name
 broot = os.path.join(basedir, fileroot)
 
+# set an unlimited stack-size of PolyChord
+curlimit = resource.getrlimit() # get current stack resource size
+resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY,resource.RLIM_INFINITY)) # set to unlimited
+
 # run nested sampling
 PolyChord.run_nested_sampling(loglikelihood_polychord, ndims, nderived, prior=prior_transform_polychord, precision_criterion=tol, nlive=nlive, file_root=fileroot, base_dir=basedir, write_resume=False, read_resume=False)
+
+# reset stack resource size
+resource.setrlimit(resource.RLIMIT_STACK, curlimit)
 
 # output marginal likelihood
 statsfile = broot+'.stats'
@@ -109,6 +117,8 @@ print(u'Marginalised evidence is {} \u00B1 {}'.format(logZ, logZerr).encode('utf
 
 # plot posterior samples (if corner.py is installed)
 try:
+    import matplotlib as mpl
+    mpl.use("Agg") # force Matplotlib backend to Agg
     import corner # import corner.py
 except ImportError:
     sys.exit(1)

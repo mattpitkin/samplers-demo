@@ -13,10 +13,8 @@ It installs the following samplers:
  * DNest4
  * PyPolyChord
 
-> Note: PyPolyChord currently only compiles with Python 2 and not with Python 3. The setting of
-> `ulimit -s unlimited` for the stack size is required to prevent Segmentation Faults with PolyChord.
-
-> Note: DNest4 is not currently cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
+> Notes: PyPolyChord currently only compiles with Python 2 and not with Python 3. DNest4 is not currently
+> cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
 > but instead from a [repository](https://github.com/mattpitkin/DNest4) with a fix that allows it to be built with Python 2.
 
 ## Docker image
@@ -32,7 +30,7 @@ docker push mattpitkin/samplers:python2
 
 ## Examples
 
-Assuming that you have downloaded this repository in a location at `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
+Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
 
 ```bash
 docker run -it -v ${HOME}/repositories/samplers-demo:/samplers mattpitkin/samplers:python2
