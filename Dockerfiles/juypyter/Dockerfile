@@ -57,26 +57,8 @@ RUN cd MultiNest_v3.10_CMake/multinest/build \
 RUN pip install --trusted-host pypi.python.org pymultinest
 
 ENV LD_LIBRARY_PATH /usr/local/lib
-ENV LD_PRELOAD /usr/lib/openmpi/lib/libmpi.so
 
-# Add PolyChord (don't install for Python 3 as it does not work)
-USER $NB_USER
-ADD PolyChord_v1.9.tar.gz ${HOME}
-USER root
-
-# add directories to install PolyChord with Python 3
-#RUN mkdir -p ${HOME}/opt/PyPolyChord/python3
-#RUN cd ${HOME}/PolyChord && make PyPolyChord && mv lib/libchord.so ${HOME}/opt/PyPolyChord/python3 && mv PyPolyChord/_PyPolyChord.so ${HOME}/opt/PyPolyChord/python3
-#ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
-#ENV LD_PRELOAD /usr/lib/openmpi/lib/libmpi.so
-#USER root
-
-# Add LD_LIBRARY_PATH, LD_PRELOAD & PYTHONPATH to /etc/environment
-#RUN echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> /etc/environment \
-#    && echo "LD_PRELOAD=${LD_PRELOAD}" >> /etc/environment \
-#    && echo "PYTHONPATH=${PYTHONPATH}" >> /etc/environment
-
-# Install DNest4 (and clean up)
+# Install DNest4 (and clean up so that Python2 install can also proceed)
 RUN cd ${HOME} && git clone https://github.com/mattpitkin/DNest4.git
 RUN chown -R $NB_USER ${HOME}/DNest4
 RUN cd ${HOME}/DNest4/python && python setup.py install --prefix=/opt/conda \
@@ -88,14 +70,16 @@ WORKDIR ${HOME}/work
 # switch back to non-root user
 USER $NB_USER
 
+# Add PolyChord (don't install for Python 3 as it does not work yet)
+ADD PolyChord_v1.9.tar.gz ${HOME}
+
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
-RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; sed -i 's|MPI=1|#MPI=1|g' Makefile; make PyPolyChord; ipython kernel install --user"
+RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; make MPI= PyPolyChord; ipython kernel install --user"
 
 USER root
-# add environment variables
+# add global environment variables
 RUN echo "PYTHONPATH=${HOME}/PolyChord/PyPolyChord" >> /etc/environment
 RUN echo "LD_LIBRARY_PATH=/usr/local/lib:${HOME}/PolyChord/lib" >> /etc/environment
-#RUN echo "LD_PRELOAD=/usr/lib/openmpi/lib/libmpi.so" >> /etc/environment
 
 # switch back to non-root user
 USER $NB_USER
