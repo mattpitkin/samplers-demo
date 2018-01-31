@@ -21,7 +21,7 @@ It installs the following samplers:
 
 ## Docker image
 
-The Dockerfile has been built, and uploaded, with (assuming MultiNest and PolyChord tarballs are in the directory):
+The Dockerfile has been built, and [uploaded](https://hub.docker.com/r/mattpitkin/samplers/tags/) to DockerHub, with (assuming MultiNest and PolyChord tarballs are in the directory):
 
 ```bash
 docker login
@@ -35,7 +35,7 @@ docker push mattpitkin/samplers:python2
 Assuming that you have downloaded this repository in a location at `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo:/samplers mattpitkin/samplers_python2:latest
+docker run -it -v ${HOME}/repositories/samplers-demo:/samplers mattpitkin/samplers:python2
 cd examples
 python test_PyPolyChord
 ```
