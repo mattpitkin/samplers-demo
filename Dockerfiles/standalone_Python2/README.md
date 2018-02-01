@@ -32,8 +32,6 @@ docker push mattpitkin/samplers:python2
 Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo:/samplers mattpitkin/samplers:python2
-cd examples
+docker run -it -v ${HOME}/repositories/samplers-demo/examples:/work mattpitkin/samplers:python2
 python test_PyPolyChord
 ```
-
