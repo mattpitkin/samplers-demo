@@ -67,18 +67,20 @@ RUN cd ${HOME}/DNest4/python && python setup.py install --prefix=/opt/conda \
 # set working directory as "/home/jovyan/work"
 WORKDIR ${HOME}/work
 
+# Add PolyChord (don't install for Python 3 as it does not work yet)
+ADD PolyChord_v1.12.tar.gz ${HOME}
+
+# Install PyPolyChord (don't use the make file, use setup.py)
+RUN cd ${HOME}/PolyChord && make MPI= && python setup.py install && chmod -R a+rw ${HOME}/PolyChord
+
 # switch back to non-root user
 USER $NB_USER
 
-# Add PolyChord (don't install for Python 3 as it does not work yet)
-ADD PolyChord_v1.9.tar.gz ${HOME}
-
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
-RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; make MPI= PyPolyChord; ipython kernel install --user"
+RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; python setup.py install --prefix=/opt/conda/envs/py27; ipython kernel install --user"
 
 USER root
 # add global environment variables
-RUN echo "PYTHONPATH=${HOME}/PolyChord/PyPolyChord" >> /etc/environment
 RUN echo "LD_LIBRARY_PATH=/usr/local/lib:${HOME}/PolyChord/lib" >> /etc/environment
 
 # switch back to non-root user

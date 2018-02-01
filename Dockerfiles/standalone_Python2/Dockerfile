@@ -59,7 +59,7 @@ RUN pip install --trusted-host pypi.python.org pymultinest
 RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
 RUN cd /samplers/DNest4/python && python setup.py install --prefix=/usr/local
 
-# Add PolyChord (don't install for Python 3 as it does not work yet)
+# Add PolyChord
 ADD PolyChord_v1.12.tar.gz /samplers
 
 # Install PyPolyChord (don't use the make file, use setup.py)

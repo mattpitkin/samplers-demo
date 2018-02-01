@@ -14,7 +14,7 @@ It installs the following samplers:
  * DNest4
  * PyPolyChord
 
-The container can create notebooks using either a Python 2 or Python 3 kernel, although PyPolyChord can only be run from a Python 2 kernel.
+The container can create notebooks using either a Python 2 or Python 3 kernel.
 
 > Note: DNest4 is not currently
 > cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
