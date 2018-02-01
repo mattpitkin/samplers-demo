@@ -49,7 +49,7 @@ NOTEBOOK_DIR = 'downloads/notebooks'
 THEME = './theme/'
 
 ABOUT_PAGE = '/pages/about.html'
-TWITTER_USERNAME = 'mattpitkin'
+TWITTER_USERNAME = 'matt_pitkin'
 GITHUB_USERNAME = 'mattpitkin'
 STACKOVERFLOW_ADDRESS = 'https://stackoverflow.com/users/1862861/matt-pitkin'
 AUTHOR_WEBSITE = 'http://www.astro.gla.ac.uk/~matthew'
