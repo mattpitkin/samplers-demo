@@ -63,12 +63,17 @@ RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
 ADD PolyChord_v1.12.tar.gz /samplers
 
 # Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd /samplers/PolyChord && make MPI= && python3 setup.py install
+RUN cd /samplers/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd lib/libchord.so | grep -o '/.*libmpi.so[^/]* ' | awk '{print "export LD_PRELOAD="$$1":$$LD_PRELOAD"}' > PyPolyChord/.ld_preload.sh; python3 setup.py install
+
+# Add getdist package for reading in PolyChord output
+RUN pip3 install --trusted-host pypi.python.org getdist
 
 # add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
 
 # update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 
+# change to new working directory
+WORKDIR /work
