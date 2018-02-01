@@ -71,7 +71,10 @@ WORKDIR ${HOME}/work
 ADD PolyChord_v1.12.tar.gz ${HOME}
 
 # Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd ${HOME}/PolyChord && make MPI= && python setup.py install && chmod -R a+rw ${HOME}/PolyChord
+RUN cd ${HOME}/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd lib/libchord.so | grep -o '/.*libmpi.so[^/]* ' | awk '{print "export LD_PRELOAD="$$1":$$LD_PRELOAD"}' > PyPolyChord/.ld_preload.sh; python setup.py install && chmod -R a+rw ${HOME}/PolyChord
+
+# Install getdist for PolyChord post-processing
+RUN pip install --trusted-host pypi.python.org getdist
 
 # switch back to non-root user
 USER $NB_USER
