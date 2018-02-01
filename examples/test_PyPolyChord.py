@@ -14,7 +14,9 @@ import numpy as np
 import resource
 
 # import PolyChord
-import PyPolyChord as PolyChord
+import PyPolyChord
+from PyPolyChord.settings import PolyChordSettings
+from PyPolyChord.priors import UniformPrior
 
 # import model and data
 from createdata import *
@@ -46,7 +48,7 @@ def prior_transform_polychord(cube):
     msigma = 10. # standard deviation of Gaussian prior on m
 
     m = mmu + msigma*ndtri(mprime) # convert back to m
-    c = cprime*(cmax-cmin) + cmin  # convert back to c
+    c = UniformPrior(cmin, cmax)(cprime) # convert back to c using UniformPrior class
 
     theta = [m, c]
     
@@ -94,26 +96,23 @@ broot = os.path.join(basedir, fileroot)
 curlimit = resource.getrlimit(resource.RLIMIT_STACK) # get current stack resource size
 resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY,resource.RLIM_INFINITY)) # set to unlimited
 
+# setup run settings using the PolyChordSetting class
+pargs = {'nlive': nlive,
+         'precision_criterion': tol,
+         'base_dir': basedir,
+         'file_root': fileroot,
+         'write_resume': False, # don't output a resume file
+         'read_resume': False}  # don't read a resume file
+settings = PolyChordSettings(ndims, nderived, **pargs)
+
 # run nested sampling
-PolyChord.run_nested_sampling(loglikelihood_polychord, ndims, nderived, prior=prior_transform_polychord, precision_criterion=tol, nlive=nlive, file_root=fileroot, base_dir=basedir, write_resume=False, read_resume=False)
+output = PyPolyChord.run_polychord(loglikelihood_polychord, ndims, nderived, settings, prior_transform_polychord)
 
 # reset stack resource size
 resource.setrlimit(resource.RLIMIT_STACK, curlimit)
 
 # output marginal likelihood
-statsfile = broot+'.stats'
-fp = open(statsfile, 'r')
-statslines = fp.readlines()
-fp.close()
-for line in statslines:
-    sp = [sv.strip() for sv in line.split()]
-    if len(sp):
-        if sp[0] == 'log(Z)':
-            logZ = float(sp[2])    # marginal likelihood value
-            logZerr = float(sp[4]) # marginal likelihood uncertainty
-            break
-
-print(u'Marginalised evidence is {} \u00B1 {}'.format(logZ, logZerr).encode('utf-8'))
+print(u'Marginalised evidence is {} \u00B1 {}'.format(output.logZ, output.logZerr).encode('utf-8'))
 
 # plot posterior samples (if corner.py is installed)
 try:
