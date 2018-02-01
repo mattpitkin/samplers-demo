@@ -13,8 +13,7 @@ It installs the following samplers:
  * DNest4
  * PyPolyChord
 
-> Notes: PyPolyChord currently only compiles with Python 2 and not with Python 3. DNest4 is not currently
-> cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
+> Note: DNest4 is not currently cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
 > but instead from a [repository](https://github.com/mattpitkin/DNest4) with a fix that allows it to be built with Python 2.
 
 ## Docker image
@@ -37,6 +36,4 @@ docker run -it -v ${HOME}/repositories/samplers-demo:/samplers mattpitkin/sample
 cd examples
 python test_PyPolyChord
 ```
-
-
 

@@ -11,8 +11,9 @@ It installs the following samplers:
  * CPNest
  * PyMultiNest
  * DNest4
+ * PyPolyChord
 
-> Notes: PyPolyChord currently only compiles with Python 2 and not with Python 3, so unlike the image described [here](https://github.com/mattpitkin/samplers-demo/tree/master/Dockerfiles/standalone_Python2) this does not contain PyPolyChord. DNest4 is not currently
+> Notes: DNest4 is not currently
 > cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
 > but instead from a [repository](https://github.com/mattpitkin/DNest4) with a fix that allows it to be built with Python 2.
 

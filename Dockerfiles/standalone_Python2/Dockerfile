@@ -60,13 +60,11 @@ RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
 RUN cd /samplers/DNest4/python && python setup.py install --prefix=/usr/local
 
 # Add PolyChord (don't install for Python 3 as it does not work yet)
-ADD PolyChord_v1.9.tar.gz /samplers
+ADD PolyChord_v1.12.tar.gz /samplers
 
-# add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
-RUN cd /samplers/PolyChord; make MPI= PyPolyChord
+# Install PyPolyChord (don't use the make file, use setup.py)
+RUN cd /samplers/PolyChord && make MPI= && python setup.py install
 
 # add global environment variables
 ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
-ENV PYTHONPATH /samplers/PolyChord/PyPolyChord
-
 

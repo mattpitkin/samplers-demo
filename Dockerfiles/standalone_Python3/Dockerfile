@@ -59,6 +59,12 @@ RUN pip3 install --trusted-host pypi.python.org pymultinest
 RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
 RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
 
+# Add PolyChord
+ADD PolyChord_v1.12.tar.gz /samplers
+
+# Install PyPolyChord (don't use the make file, use setup.py)
+RUN cd /samplers/PolyChord && make MPI= && python3 setup.py install
+
 # add global environment variables
 ENV LD_LIBRARY_PATH /usr/local/lib
 
