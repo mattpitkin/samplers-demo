@@ -48,7 +48,7 @@ NOTEBOOK_DIR = 'downloads/notebooks'
 # THEME SETTINGS
 THEME = './theme/'
 
-ABOUT_PAGE = '/pages/about.html'
+ABOUT_PAGE = 'samplers-demo/pages/about.html'
 TWITTER_USERNAME = 'matt_pitkin'
 GITHUB_USERNAME = 'mattpitkin'
 STACKOVERFLOW_ADDRESS = 'https://stackoverflow.com/users/1862861/matt-pitkin'
