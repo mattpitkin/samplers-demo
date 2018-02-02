@@ -9,6 +9,7 @@ from __future__ import print_function, division
 
 import os
 import sys
+import six
 from scipy.special import ndtri
 import numpy as np
 import resource
@@ -112,7 +113,7 @@ output = PyPolyChord.run_polychord(loglikelihood_polychord, ndims, nderived, set
 resource.setrlimit(resource.RLIMIT_STACK, curlimit)
 
 # output marginal likelihood
-print(u'Marginalised evidence is {} \u00B1 {}'.format(output.logZ, output.logZerr).encode('utf-8'))
+print(six.u('Marginalised evidence is {} \u00B1 {}'.format(output.logZ, output.logZerr)))
 
 # plot posterior samples (if corner.py is installed)
 try:
