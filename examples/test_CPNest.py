@@ -10,7 +10,6 @@ from __future__ import print_function, division
 import os
 import sys
 import six
-from scipy.special import ndtri
 import numpy as np
 
 # import CPNest

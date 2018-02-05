@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Example of running CPNest to fit the parameters of a straight line.
+Example of running PyMultiNest to fit the parameters of a straight line.
 """
 
 from __future__ import print_function, division
