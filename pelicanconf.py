@@ -18,8 +18,10 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Set the article URL
-ARTICLE_URL = 'blog/{date:%Y}/{date:%m}/{date:%d}/{slug}/'
-ARTICLE_SAVE_AS = 'blog/{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
+#ARTICLE_URL = 'blog/{date:%Y}/{date:%m}/{date:%d}/{slug}/'
+#ARTICLE_SAVE_AS = 'blog/{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
+ARTICLE_URL = 'pages/{slug}/'
+ARTICLE_SAVE_AS = 'pages/{slug}/index.html'
 
 DEFAULT_PAGINATION = 10
 
@@ -48,14 +50,14 @@ NOTEBOOK_DIR = 'downloads/notebooks'
 # THEME SETTINGS
 THEME = './theme/'
 
-ABOUT_PAGE = 'samplers-demo/pages/about.html'
+ABOUT_PAGE = '/samplers-demo/pages/about.html'
 TWITTER_USERNAME = 'matt_pitkin'
 GITHUB_USERNAME = 'mattpitkin'
 STACKOVERFLOW_ADDRESS = 'https://stackoverflow.com/users/1862861/matt-pitkin'
 AUTHOR_WEBSITE = 'http://www.astro.gla.ac.uk/~matthew'
 AUTHOR_BLOG = 'http://cosmiczoo.blogspot.com'
 SHOW_ARCHIVES = False
-SHOW_FEED = False  # Need to address large feeds
+SHOW_FEED = False
 
 ENABLE_MATHJAX = True
 

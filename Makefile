@@ -5,24 +5,12 @@ PELICANOPTS=
 BASEDIR=$(CURDIR)
 INPUTDIR=$(BASEDIR)/content
 OUTPUTDIR=$(BASEDIR)/output
-OUTPUTBUILDDIR=$(OUTPUTDIR)/samplers-demo
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
 
-FTP_HOST=localhost
-FTP_USER=anonymous
-FTP_TARGET_DIR=/
-
-SSH_HOST=localhost
-SSH_PORT=22
-SSH_USER=root
-SSH_TARGET_DIR=/var/www
-
-S3_BUCKET=my_s3_bucket
-
-CLOUDFILES_USERNAME=my_rackspace_username
-CLOUDFILES_API_KEY=my_rackspace_api_key
-CLOUDFILES_CONTAINER=my_cloudfiles_container
+# assumes github pages has been added as a submodule to the repo
+PAGES_SUBMODULE=$(CURDIR)/mattpitkin.github.io
+PAGES_DIR=$(PAGES_SUBMODULE)/samplers-demo
 
 GITHUB_PAGES_REMOTE=https://github.com/mattpitkin/mattpitkin.github.io.git
 GITHUB_PAGES_BRANCH=master
@@ -52,6 +40,7 @@ help:
 	@echo '   make serve-global [SERVER=0.0.0.0]  serve (as root) to $(SERVER):80    '
 	@echo '   make devserver [PORT=8000]          start/restart develop_server.sh    '
 	@echo '   make stopserver                     stop local server                  '
+	@echo '   make pages-submodule                add to gh-pages submodule          '
 	@echo '   make github                         upload the web site via gh-pages   '
 	@echo '                                                                          '
 	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
@@ -59,19 +48,19 @@ help:
 	@echo '                                                                          '
 
 html:
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTBUILDDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 
 regenerate:
-	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTBUILDDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
 
 serve:
 ifdef PORT
-	cd $(OUTPUTBUILDDIR) && $(PY) -m pelican.server $(PORT)
+	cd $(OUTPUTDIR) && $(PY) -m pelican.server $(PORT)
 else
-	cd $(OUTPUTBUILDDIR) && $(PY) -m pelican.server
+	cd $(OUTPUTDIR) && $(PY) -m pelican.server
 endif
 
 serve-global:
@@ -94,14 +83,25 @@ stopserver:
 	@echo 'Stopped Pelican and SimpleHTTPServer processes running in background.'
 
 publish:
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTBUILDDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
+	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
 
-publish-to-github: publish
-	ghp-import -n -m "publish-to-github from $(GIT_COMMIT_HASH)" -b blog-build $(OUTPUTDIR)
-	git push $(GITHUB_PAGES_REMOTE) blog-build:$(GITHUB_PAGES_BRANCH)
+pages-submodule: publish
+	# make sure gh-pages submoduls is up-to-date
+	cd $(PAGES_SUBMODULE) && git pull --rebase && cd $(CURDIR)
+	# rsync only samplers-demo changes (deleting any removed files)
+	rsync -av --delete $(OUTPUTDIR)/ $(PAGES_DIR)/
+	cd $(PAGES_DIR) && git add * && git commit -a -m "Update samplers-demo"
 
-publish-to-github-force: publish
-	ghp-import -n -m "publish-to-github-force from $(GIT_COMMIT_HASH)" -b blog-build $(OUTPUTDIR)
-	git push -f $(GITHUB_PAGES_REMOTE) blog-build:$(GITHUB_PAGES_BRANCH)
+publish-to-github: pages-submodule
+	cd $(PAGES_SUBMODULE) && git pull --rebase && git push origin $(GITHUB_PAGES_BRANCH)
 
-.PHONY: html help clean regenerate serve serve-global devserver stopserver publish github
+# remove the use of ghp-import by having gh-pages repo as a submodule
+#publish-to-github: publish
+#	ghp-import -n -m "publish-to-github from $(GIT_COMMIT_HASH)" -b blog-build $(OUTPUTDIR)
+#	git push $(GITHUB_PAGES_REMOTE) blog-build:$(GITHUB_PAGES_BRANCH)
+
+#publish-to-github-force: publish
+#	ghp-import -n -m "publish-to-github-force from $(GIT_COMMIT_HASH)" -b blog-build $(OUTPUTDIR)
+#	git push -f $(GITHUB_PAGES_REMOTE) blog-build:$(GITHUB_PAGES_BRANCH)
+
+.PHONY: html help clean regenerate serve serve-global devserver stopserver publish github pages-submodule publish-to-github
