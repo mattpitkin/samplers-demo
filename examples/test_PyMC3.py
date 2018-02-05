@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Example of running emcee to fit the parameters of a straight line.
+Example of running PyMC3 to fit the parameters of a straight line.
 """
 
 from __future__ import print_function, division
