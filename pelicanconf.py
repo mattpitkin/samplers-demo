@@ -32,13 +32,13 @@ DEFAULT_PAGINATION = 10
 #PLUGINS = ['ipynb.markup']
 
 MARKUP = ['md']
-PLUGIN_PATHS = ['./plugins', './plugins/pelican-plugins']
+PLUGIN_PATHS = ['./plugins', './plugins/edited_plugins', './plugins/pelican-plugins']
 PLUGINS = [
     'summary',       # auto-summarizing articles
     'feed_summary',  # use summaries for RSS, not full articles
     'ipynb.liquid',  # for embedding notebooks
     'liquid_tags.img',  # embedding images
-    'liquid_tags.include_code',  # including code blocks
+    'include_code',  # including code blocks
     'liquid_tags.literal'
 ]
 IGNORE_FILES = ['.ipynb_checkpoints']
