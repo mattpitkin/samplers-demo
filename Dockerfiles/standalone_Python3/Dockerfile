@@ -56,7 +56,7 @@ RUN cd MultiNest_v3.10_CMake/multinest/build \
 RUN pip3 install --trusted-host pypi.python.org pymultinest
 
 # Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
+RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
 RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
 
 # Add PolyChord
@@ -74,6 +74,9 @@ ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
 # update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+
+# set PYTHONIOENCODING to utf-8
+ENV PYTHONIOENCODING utf-8
 
 # change to new working directory
 WORKDIR /work

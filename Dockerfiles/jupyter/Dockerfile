@@ -59,7 +59,7 @@ RUN pip install --trusted-host pypi.python.org pymultinest
 ENV LD_LIBRARY_PATH /usr/local/lib
 
 # Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd ${HOME} && git clone https://github.com/mattpitkin/DNest4.git
+RUN cd ${HOME} && git clone https://github.com/eggplantbren/DNest4.git
 RUN chown -R $NB_USER ${HOME}/DNest4
 RUN cd ${HOME}/DNest4/python && python setup.py install --prefix=/opt/conda \
     && rm -rf build && rm -rf dist && rm -rf dnest4.egg-info && rm dnest4/_dnest4.cpp
