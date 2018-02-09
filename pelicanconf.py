@@ -42,7 +42,7 @@ PLUGINS = [
     'liquid_tags.include_code',  # including code blocks
     'liquid_tags.literal'
 ]
-IGNORE_FILES = ['.ipynb_checkpoints']
+IGNORE_FILES = ['.ipynb_checkpoints', 'README.md']
 
 # for liquid tags
 CODE_DIR = 'downloads/code'
