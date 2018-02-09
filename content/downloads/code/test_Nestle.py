@@ -67,7 +67,7 @@ method = 'multi' # use MutliNest algorithm
 ndims = 2        # two parameters
 tol= 0.5         # the stopping criterion (this is the nestle default, so doesn't need to be set)
 
-res = nestle.sample(loglikelihood_nestle, prior_transform, ndims, method=method, npoints=nlive)
+res = nestle.sample(loglikelihood_nestle, prior_transform, ndims, method=method, npoints=nlive, dlogz=tol)
 
 logZnestle = res.logz                         # value of logZ
 infogainnestle = res.h                        # value of the information gain in nats
