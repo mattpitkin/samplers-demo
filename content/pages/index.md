@@ -47,7 +47,7 @@ the samplers mentioned above can be found [here](http://mattpitkin.github.io/sam
 ## Acknowlegdments
 
 The samplers mentioned above are obviously the work of a lot of people and I am very much indebted to
-them for producing the software. Hopefully, this site will make it slightly easier for some more to
+them for producing the software. Hopefully, this site will make it slightly easier for some more people to
 get started using them. References for each of the packages can be found in the appropriate section of
 the [demonstration page](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/).
 
