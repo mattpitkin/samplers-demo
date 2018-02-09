@@ -1,9 +1,6 @@
-[submodule "plugins/ipynb"]
-	path = plugins/ipynb
-	url = https://github.com/danielfrg/pelican-ipynb
 [submodule "plugins/pelican-plugins"]
 	path = plugins/pelican-plugins
-	url = https://github.com/getpelican/pelican-plugins
+	url = https://github.com/mattpitkin/pelican-plugins
 [submodule "mattpitkin.github.io"]
 	path = mattpitkin.github.io
 	url = https://github.com/mattpitkin/mattpitkin.github.io
