@@ -47,7 +47,7 @@ class StraightLineModel(Model):
     # set the m bounds to be +/- 10sigma about the mean
     mbounds = [mmu-10.*msigma, mmu+10.*msigma]
 
-    # NOTE: the bounds could instead be set through arguments pass to the __init__
+    # NOTE: the bounds could instead be set through arguments passed to the __init__
     # function for the class if wanted
     bounds=[mbounds, cbounds] # upper and lower bounds on each parameter (required for the class)
 
