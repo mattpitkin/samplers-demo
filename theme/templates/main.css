@@ -198,17 +198,17 @@ article .meta a.comments_btn:hover {
   max-width: 700px;
 }
 .post h2:before {
-  content: "# ";
+  /*content: "# ";*/
   font-weight: bold;
   color: #DDD;
 }
 .post h3:before {
-  content: "## ";
+  /*content: "## ";*/
   font-weight: bold;
   color: #DDD;
 }
 .post h4:before {
-  content: "### ";
+  /*content: "### ";*/
   font-weight: bold;
   color: #DDD;
 }
