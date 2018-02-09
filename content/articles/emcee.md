@@ -6,7 +6,7 @@ tags: emcee,MCMC
 
 <!-- PELICAN_BEGIN_SUMMARY -->
 Here we show a standalone example of using [emcee](http://dfm.io/emcee/current/) to
-estimate the parameters of a straight line model in data with Gaussian noise. This
+estimate the parameters of a straight line model in data with Gaussian noise. The
 data and model used in this example are defined in `createdata.py`, which can be downloaded
 from [here](http://mattpitkin.github.io/samplers-demo/downloads/code/createdata.py). The
 script shown below can be downloaded from [here](http://mattpitkin.github.io/samplers-demo/downloads/code/test_emcee.py).

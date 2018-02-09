@@ -1,6 +1,6 @@
 title: Samplers demo
-slug: about
-Template: about
+slug: index
+Template: index
 
 This site aims gives a demonstration of nine different [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
 and [nested sampling](https://en.wikipedia.org/wiki/Nested_sampling_algorithm) algorithms that are

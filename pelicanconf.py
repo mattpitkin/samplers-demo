@@ -51,7 +51,8 @@ NOTEBOOK_DIR = 'downloads/notebooks'
 # THEME SETTINGS
 THEME = './theme/'
 
-ABOUT_PAGE = '/samplers-demo/pages/about.html'
+ARTICLES_PAGE = '/samplers-demo/pages/articles.html'
+ARTICLES_SAVE_AS = '/samplers-demo/pages/articles.html'
 TWITTER_USERNAME = 'matt_pitkin'
 GITHUB_USERNAME = 'mattpitkin'
 STACKOVERFLOW_ADDRESS = 'https://stackoverflow.com/users/1862861/matt-pitkin'
@@ -59,6 +60,7 @@ AUTHOR_WEBSITE = 'http://www.astro.gla.ac.uk/~matthew'
 AUTHOR_BLOG = 'http://cosmiczoo.blogspot.com'
 SHOW_ARCHIVES = False
 SHOW_FEED = False
+GOOGLE_ANALYTICS = 'UA-10008049-8'
 
 ENABLE_MATHJAX = True
 
