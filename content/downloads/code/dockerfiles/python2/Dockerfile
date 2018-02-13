@@ -28,6 +28,9 @@ RUN pip install --upgrade pip
 # Install numpy, scipy, matplotlib and corner
 RUN pip install --trusted-host pypi.python.org numpy scipy matplotlib corner
 
+# Install IPython kernel
+RUN pip install --trusted-host pypi.python.org ipykernel
+
 # Install samplers
 # Install PyJAGS from PyPI
 RUN pip install --trusted-host pypi.python.org pyjags
@@ -70,6 +73,10 @@ RUN pip install --trusted-host pypi.python.org getdist
 
 # add global environment variables
 ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
+
+# Install UltraNest
+RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
+RUN cd /samplers/UltraNest && python setup.py install --prefix=/usr/local
 
 # change to new working directory
 WORKDIR /work

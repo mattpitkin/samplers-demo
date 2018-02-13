@@ -28,6 +28,9 @@ RUN pip3 install --upgrade pip
 # Install numpy, scipy, matplotlib and corner
 RUN pip3 install --trusted-host pypi.python.org numpy scipy matplotlib corner
 
+# Install IPython Kernel
+RUN pip3 install --trusted-host pypi.python.org ipykernel
+
 # Install samplers
 # Install PyJAGS from PyPI
 RUN pip3 install --trusted-host pypi.python.org pyjags
@@ -70,6 +73,10 @@ RUN pip3 install --trusted-host pypi.python.org getdist
 
 # add global environment variables
 ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
+
+# Install UltraNest
+RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
+RUN cd /samplers/UltraNest && python3 setup.py install --prefix=/usr/local
 
 # update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10

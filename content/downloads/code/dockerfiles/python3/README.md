@@ -12,6 +12,7 @@ It installs the following samplers:
  * PyMultiNest
  * DNest4
  * PyPolyChord
+ * UltraNest
 
 > Notes: DNest4 is not currently
 > cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
