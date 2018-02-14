@@ -7,7 +7,7 @@ WORKDIR /samplers
 RUN apt-get update
 
 # install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
-RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng
+RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng python-tk
 
 # install light(ish) weight LaTeX
 RUN apt-get install -y --no-install-recommends texlive texlive-latex-extra
@@ -71,12 +71,17 @@ RUN cd /samplers/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd
 # Add getdist package for reading in PolyChord output
 RUN pip install --trusted-host pypi.python.org getdist
 
-# add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
-
 # Install UltraNest
+# first install metric-learn and progressbar-latest, which are required by UltraNest
+RUN pip install --trusted-host pypi.python.org metric-learn progressbar-latest
+
 RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
 RUN cd /samplers/UltraNest && python setup.py install --prefix=/usr/local
+RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python2.7/dist-packages/nested_sampling/clustering
+
+# add global environment variables
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib:/samplers/UltraNest/nested_sampling/clustering
+ENV PYTHONPATH /usr/local/lib/python2.7/dist-packages/nested_sampling
 
 # change to new working directory
 WORKDIR /work
