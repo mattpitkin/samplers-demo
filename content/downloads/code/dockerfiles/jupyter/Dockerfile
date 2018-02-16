@@ -76,11 +76,22 @@ RUN cd ${HOME}/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd l
 # Install getdist for PolyChord post-processing
 RUN pip install --trusted-host pypi.python.org getdist
 
+# Install UltraNest
+# first install metric-learn and progressbar-latest, which are required by UltraNest
+RUN pip install --trusted-host pypi.python.org metric-learn progressbar-latest
+
+RUN cd ${HOME} && git clone https://github.com/JohannesBuchner/UltraNest.git
+RUN chown -R $NB_USER ${HOME}/UltraNest
+RUN cd ${HOME}/UltraNest && python setup.py install --prefix=/opt/conda
+RUN cd ${HOME}/UltraNest/nested_sampling/clustering && make && cp *.so /opt/conda/lib/python3.6/site-packages/nested_sampling/clustering
+
+ENV PYTHONPATH /opt/conda/lib/python3.6/site-packages/nested_sampling
+
 # switch back to non-root user
 USER $NB_USER
 
 # add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
-RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest getdist; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; python setup.py install --prefix=/opt/conda/envs/py27; ipython kernel install --user"
+RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install emcee pymc3 pystan pyjags pymultinest nestle cpnest getdist metric-learn progressbar-latest; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/UltraNest; python setup.py install --prefix=/opt/conda/envs/py27; cp nested_sampling/clustering/*.so /opt/conda/envs/py27/lib/python2.7/site-packages/nested_sampling/clustering; ipython kernel install --user; mkdir -p /opt/conda/envs/py27/etc/conda; echo \"PYTHONPATH=/opt/conda/envs/py27/lib/python2.7/site-packages/nested_sampling\" > /opt/conda/envs/py27/etc/conda/activate.d"
 
 USER root
 # add global environment variables
