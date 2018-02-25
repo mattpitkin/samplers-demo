@@ -1,53 +1,55 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block headerimg %}{{ DEFAULT_HEADER_BG }}{% endblock %}
+
+{% block title %}{{ "Samplers demo" }}{% endblock %}
+{% block headerimg %}{% if page.headerimg %}{{ page.headerimg }}{% else %}{{ DEFAULT_HEADER_BG }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="container index">
 
-  {% for article in articles_page.object_list %}
-  <article>
-    <header>
-      <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
-      <time datetime="" title="{{ article.date.isoformat() }}" pubdate>{{ article.locale_date }}</time>
-    </header>
+{% for page in pages %}
+{% if page.template == 'index' %}
+<div class="container post">
+    <article>
+        <header class="about">
+          <h1>{{ page.title }}</h1>
+          {% if page.date %}
+          <time datetime="page.date.isoformat()" pubdate>{{ page.locale_date }}</time>
+          {% endif %}
+	  
+        <div class="article_content">
+            {{ page.content }}
+        </div>
 
-    <div class="article_content">
-      {{ article.summary }}
-    </div>
+    </article>
+</div>
+{% endif %}
+{% endfor %}
 
-    <div class="meta">
-      <div>
-        <a href="{{ SITEURL }}/{{ article.url }}" class="read_more">Read more &#8594;</a>
-      </div>
-
-      <div>
-          {% for tag in article.tags %}
-            <a href="{{ SITEURL }}/{{ tag.url }}" class="tag">{{ tag }}</a>
-          {% endfor %}
-      </div>
-
-    </div>
-
-  </article>
-  <div class="separator"></div>
-  {% endfor %}
-
-  <nav class="pagination row">
-    <div class="col-xs-6 left">
-      {% if articles_page.has_next() %}
-        <a class="prev" href="{{ SITEURL }}/{{ articles_next_page.url }}">&#8592; Past</a>
-      {% endif %}
-    </div>
-    <div class="col-xs-6 right">
-      {% if articles_page.has_previous() %}
-        <a class="next" href="{{ SITEURL }}/{{ articles_previous_page.url }}">Future &#8594;</a>
-      {% endif %}
-    </div>
-  </nav>
-
-  </div>
-
+<div class="container post">
+<article> <!-- Use article tag so that "social-links" class can be used -->
+<header class="about container">
+<div class="social-links container">
+	    <ul>
+	      {% if AUTHOR_WEBSITE %}
+	      <li><a href="{{ AUTHOR_WEBSITE }}" rel="me">website</a></li>
+              {% endif %}
+	      {% if AUTHOR_BLOG %}
+	      <li><a href="{{ AUTHOR_BLOG }}" rel="me">blog</a></li>
+              {% endif %}
+	      {% if TWITTER_USERNAME %}
+	      <li><a class="nodec icon-twitter" href="http://twitter.com/{{ TWITTER_USERNAME }}" rel="me"></a></li>
+              {% endif %}
+              {% if GITHUB_USERNAME %}
+	      <li><a class="nodec icon-github" href="http://github.com/{{ GITHUB_USERNAME }}" rel="me"></a></li>
+              {% endif %}
+              {% if STACKOVERFLOW_ADDRESS %}
+	      <li><a class="nodec icon-stackoverflow" href="{{ STACKOVERFLOW_ADDRESS }}" rel="me"></a></li>
+	      {% endif %}
+	    </ul>
+</div>
+</header>
+</article>
 </div>
 
+
 {% endblock %}
+

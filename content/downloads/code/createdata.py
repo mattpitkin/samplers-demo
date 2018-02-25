@@ -13,7 +13,7 @@ M = 100
 xmin = 0.
 xmax = 10.
 stepsize = (xmax-xmin)/M
-x = np.arange(0.0, 10.0, 10./M)
+x = np.arange(xmin, xmax, stepsize)
 
 # define the model function
 def straight_line(x, m, c):

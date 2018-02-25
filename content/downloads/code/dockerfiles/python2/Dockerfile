@@ -7,7 +7,7 @@ WORKDIR /samplers
 RUN apt-get update
 
 # install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
-RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng
+RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng python-tk
 
 # install light(ish) weight LaTeX
 RUN apt-get install -y --no-install-recommends texlive texlive-latex-extra
@@ -27,6 +27,9 @@ RUN pip install --upgrade pip
 
 # Install numpy, scipy, matplotlib and corner
 RUN pip install --trusted-host pypi.python.org numpy scipy matplotlib corner
+
+# Install IPython kernel
+RUN pip install --trusted-host pypi.python.org ipykernel
 
 # Install samplers
 # Install PyJAGS from PyPI
@@ -56,7 +59,7 @@ RUN cd MultiNest_v3.10_CMake/multinest/build \
 RUN pip install --trusted-host pypi.python.org pymultinest
 
 # Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
+RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
 RUN cd /samplers/DNest4/python && python setup.py install --prefix=/usr/local
 
 # Add PolyChord
@@ -68,8 +71,17 @@ RUN cd /samplers/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd
 # Add getdist package for reading in PolyChord output
 RUN pip install --trusted-host pypi.python.org getdist
 
+# Install UltraNest
+# first install metric-learn and progressbar-latest, which are required by UltraNest
+RUN pip install --trusted-host pypi.python.org metric-learn progressbar-latest
+
+RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
+RUN cd /samplers/UltraNest && python setup.py install --prefix=/usr/local
+RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python2.7/dist-packages/nested_sampling/clustering
+
 # add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib:/samplers/UltraNest/nested_sampling/clustering
+ENV PYTHONPATH /usr/local/lib/python2.7/dist-packages/nested_sampling
 
 # change to new working directory
 WORKDIR /work

@@ -98,12 +98,12 @@ Nens = 100   # number of ensemble points
 mmu = 0.     # mean of the Gaussian prior
 msigma = 10. # standard deviation of the Gaussian prior
 
-mini = mmu + msigma*np.random.randn(Nens) # initial m points
+mini = np.random.normal(mmu, msigma, Nens) # initial m points
 
 cmin = -10.  # lower range of prior
 cmax = 10.   # upper range of prior
 
-cini = cmin + (cmax-cmin)*np.random.rand(Nens) # initial c points
+cini = np.random.uniform(cmin, cmax, Nens) # initial c points
 
 inisamples = np.array([mini, cini]).T # initial samples
 

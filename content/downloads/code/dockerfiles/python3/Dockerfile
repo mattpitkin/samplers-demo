@@ -28,6 +28,9 @@ RUN pip3 install --upgrade pip
 # Install numpy, scipy, matplotlib and corner
 RUN pip3 install --trusted-host pypi.python.org numpy scipy matplotlib corner
 
+# Install IPython Kernel
+RUN pip3 install --trusted-host pypi.python.org ipykernel
+
 # Install samplers
 # Install PyJAGS from PyPI
 RUN pip3 install --trusted-host pypi.python.org pyjags
@@ -56,7 +59,7 @@ RUN cd MultiNest_v3.10_CMake/multinest/build \
 RUN pip3 install --trusted-host pypi.python.org pymultinest
 
 # Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd /samplers && git clone https://github.com/mattpitkin/DNest4.git
+RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
 RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
 
 # Add PolyChord
@@ -68,12 +71,24 @@ RUN cd /samplers/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd
 # Add getdist package for reading in PolyChord output
 RUN pip3 install --trusted-host pypi.python.org getdist
 
+# Install UltraNest
+# first install metric-learn and progressbar-latest, which are required by UltraNest
+RUN pip3 install --trusted-host pypi.python.org metric-learn progressbar-latest
+
+RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
+RUN cd /samplers/UltraNest && python3 setup.py install --prefix=/usr/local
+RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python3.5/dist-packages/nested_sampling/clustering
+
 # add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib:/samplers/UltraNest/nested_sampling/clustering
+ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages/nested_sampling
 
 # update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+
+# set PYTHONIOENCODING to utf-8
+ENV PYTHONIOENCODING utf-8
 
 # change to new working directory
 WORKDIR /work

@@ -48,8 +48,7 @@ Ntune = 1000    # number of tuning samples
 
 # perform sampling
 with linear_model:
-    start = pm.find_MAP() # find starting value using optimisation methods
-    trace = pm.sample(Nsamples, start=start, tune=Ntune, discard_tuned_samples=True) # perform sampling
+    trace = pm.sample(Nsamples, tune=Ntune, discard_tuned_samples=True) # perform sampling
 
 # extract the samples
 postsamples = np.vstack((trace['m'], trace['c'])).T

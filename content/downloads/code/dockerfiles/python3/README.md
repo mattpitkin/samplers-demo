@@ -1,6 +1,6 @@
-# Docker Image: Ubuntu 16.04, Python 2.7.12
+# Docker Image: Ubuntu 16.04, Python 3.5.2
 
-This Dockerfile creates an image using Ubuntu 16.04 with Python 2.7.12.
+This Dockerfile creates an image using Ubuntu 16.04 with Python 3.5.2.
 
 It installs the following samplers:
  * emcee
@@ -12,8 +12,10 @@ It installs the following samplers:
  * PyMultiNest
  * DNest4
  * PyPolyChord
+ * UltraNest
 
-> Note: DNest4 is not currently cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
+> Notes: DNest4 is not currently
+> cloned from the [original repository](https://github.com/eggplantbren/DNest4/),
 > but instead from a [repository](https://github.com/mattpitkin/DNest4) with a fix that allows it to be built with Python 2.
 
 ## Docker image
@@ -22,9 +24,9 @@ The Dockerfile has been built, and [uploaded](https://hub.docker.com/r/mattpitki
 
 ```bash
 docker login
-docker build -t samplers:python2 .
-docker tag samplers:python2 mattpitkin/samplers:python2
-docker push mattpitkin/samplers:python2
+docker build -t samplers:python3 .
+docker tag samplers:python3 mattpitkin/samplers:python3
+docker push mattpitkin/samplers:python3
 ```
 
 ## Examples
@@ -32,6 +34,7 @@ docker push mattpitkin/samplers:python2
 Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo/examples:/work mattpitkin/samplers:python2
-python test_PyPolyChord
+docker run -it -v ${HOME}/repositories/samplers-demo/examples:/work mattpitkin/samplers:python3
+python test_emcee
 ```
+

@@ -13,6 +13,7 @@ It installs the following samplers:
  * PyMultiNest
  * DNest4
  * PyPolyChord
+ * UltraNest
 
 The container can create notebooks using either a Python 2 or Python 3 kernel.
 
