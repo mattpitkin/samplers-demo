@@ -13,7 +13,7 @@ import six
 import numpy as np
 
 # import DNest4
-from dnest4 import randh
+from dnest4 import randh, wrap
 import dnest4
 
 # import model and data
@@ -21,6 +21,13 @@ from createdata import *
 
 LN2PI = np.log(2.*np.pi)
 LNSIGMA = np.log(sigma)
+
+# define prior range values
+cmin = -10.  # lower range on c (the same as the uniform c prior lower bound)
+cmax = 10.   # upper range on c (the same as the uniform c prior upper bound)
+
+mmu = 0.     # mean of the Gaussian prior on m
+msigma = 10. # standard deviation of the Gaussian prior on m
 
 # Create model class
 class DNest4Model(object):
@@ -41,12 +48,6 @@ class DNest4Model(object):
             :class:`np.ndarray`: a numpy array containing the parameter values.
         
         """
-
-        cmin = -10.  # lower range on c (the same as the uniform c prior lower bound)
-        cmax = 10.   # upper range on c (the same as the uniform c prior upper bound)
-
-        mmu = 0.     # mean of the Gaussian prior on m
-        msigma = 10. # standard deviation of the Gaussian prior on m
 
         m = np.random.normal(mmu, msigma)
         c = np.random.uniform(cmin,  cmax)
@@ -73,10 +74,14 @@ class DNest4Model(object):
         if which == 0:
             # update H for Gaussian prior
             logH -= -0.5*((params[which]-mmu)/msigma)**2
-        params[which] += 10.*randh() # scale factor of 10, which is ~the prior width
+        params[which] += 1.*randh() # scale factor of 1. (randh is a heavy-tailed distribution to occasionally sample distant values, although this isn't really required in this case)
+
         if which == 0:
             # update H for Gaussian prior
             logH += -0.5*((params[which]-mmu)/msigma)**2
+        else:
+            # wrap c value so that it stays within the prior range
+            params[which] = wrap(params[which], cmin, cmax)
 
         return logH
 
@@ -99,13 +104,8 @@ gen = sampler.sample(max_num_levels=30, num_steps=1000, new_level_interval=10000
                      num_per_step=10000, thread_steps=100, num_particles=5, lam=10, beta=100)
 
 # Do the sampling (one iteration here = one particle save)
-t0 = time()
 for sample in enumerate(gen):
     pass
-
-# run the algorithm
-solution = StraightLineModelPyMultiNest(data, x, straight_line, sigma, n_dims=ndim,
-                                        n_live_points=nlive, evidence_tolerance=tol);
 
 # Run the postprocessing to get marginal likelihood and generate posterior samples
 logZdnest4, infogaindnest4, _ = dnest4.postprocess(plot=False);
