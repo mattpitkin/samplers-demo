@@ -59,7 +59,8 @@ and any problems/suggestions can be submitted as
 here.
 
 Also deserving thanks are: [Chris Pankow](https://github.com/cpankow) for spotting and fixing many typos and adding useful information to the
-emcee section of the sampler demonstration page.
+emcee section of the sampler demonstration page; and, [João Faria](https://github.com/j-faria) for spotting a problem with the DNest4 example
+and suggesting a fix.
 
 ### The author
 
