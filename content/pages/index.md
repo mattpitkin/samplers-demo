@@ -58,6 +58,9 @@ and any problems/suggestions can be submitted as
 [issues](https://github.com/mattpitkin/samplers-demo/issues) there, or left as comments on the various pages
 here.
 
+Also deserving thanks are: [Chris Pankow](https://github.com/cpankow) for spotting and fixing many typos and adding useful information to the
+emcee section of the sampler demonstration page.
+
 ### The author
 
 My name is [Matthew Pitkin](http://www.astro.gla.ac.uk/~matthew) and I'm an astrophysicist working on gravitational wave data analysis in
