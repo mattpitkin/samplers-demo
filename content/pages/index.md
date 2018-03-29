@@ -36,12 +36,14 @@ Standalone examples for each sampler can be found at the links below:
 * [PyMC3 example](http://mattpitkin.github.io/samplers-demo/pages/pymc3/)
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
+* [edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
 * [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
 * [PyMultiNest example](http://mattpitkin.github.io/samplers-demo/pages/pymultinest/)
 * [DNest4 example](http://mattpitkin.github.io/samplers-demo/pages/dnest4/)
 * [PyPolyChord example](http://mattpitkin.github.io/samplers-demo/pages/pypolychord/)
+* [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
 
 Information on [Docker](https://docs.docker.com/) images that can be used to run all
 the samplers mentioned above can be found [here](http://mattpitkin.github.io/samplers-demo/pages/docker/).
