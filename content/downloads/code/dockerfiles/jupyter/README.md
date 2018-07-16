@@ -41,4 +41,3 @@ docker run -it -v ${HOME}/repositories/samplers-demo:/home/jovyan/work -e NB_UID
 ```
 
 then pasting the supplied link into your browser, and selecting the `Samplers.ipynb` file.
-

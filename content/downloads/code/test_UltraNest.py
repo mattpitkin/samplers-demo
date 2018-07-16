@@ -82,7 +82,7 @@ def loglikelihood_ultranest(theta):
 
 nlive = 1024      # number of live points
 ndims = 2         # two parameters
-tol = 0.5         # the stopping criterion (this is the nestle default, so doesn't need to be set)
+tol = 0.5         # the stopping criterion
 
 # set "constrainer" for sampling the constrained prior
 constrainer = MetricLearningFriendsConstrainer(metriclearner='truncatedscaling', force_shrink=True, rebuild_every=50, verbose=False)
@@ -107,7 +107,6 @@ print(six.u('Marginalised evidence is {} \u00B1 {}'.format(logZultranest, logZer
 # get the posterior samples (first output is samples in the unit hypercube, so ignore that)
 x = np.array([xi for ui, xi, Li, logwidth in result['weights']])
 probs = np.array([Li + logwidth for ui, xi, Li, logwidth in result['weights']])
-#_, postsamples = equal_weighted_posterior(result['weights'])
 probs = np.exp(probs - probs.max())
 
 keepidx = np.where(np.random.rand(len(probs)) < probs)[0]

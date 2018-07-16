@@ -2,9 +2,9 @@ title: Samplers demo
 slug: index
 Template: index
 
-This site aims gives a demonstration of [nine different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
+This site aims gives a demonstration of [ten different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
 and [nested sampling](https://en.wikipedia.org/wiki/Nested_sampling_algorithm) algorithms that are
-either written in Python, or have Python-wrapper implementations. The demostration is a simple toy
+either written in Python, or have Python-wrapper implementations. The demonstration is a simple toy
 model of estimating the posteriors on the parameters of a straight line in Gaussian noise of known variance.
 
 ## Samplers
@@ -20,11 +20,12 @@ The nested sampling algorithms implementations uses are:
 
 1. [Nestle](http://kylebarbary.com/nestle/)
 2. [CPNest](https://johnveitch.github.io/cpnest/)
-3. [PyMultiNest](https://johannesbuchner.github.io/PyMultiNest/)
-4. [DNest4](https://github.com/eggplantbren/DNest4)
-5. [PyPolyChord](https://ccpforge.cse.rl.ac.uk/gf/project/polychord/)
+3. [UltraNest](https://github.com/JohannesBuchner/UltraNest)
+4. [PyMultiNest](https://johannesbuchner.github.io/PyMultiNest/)
+5. [DNest4](https://github.com/eggplantbren/DNest4)
+6. [PyPolyChord](https://ccpforge.cse.rl.ac.uk/gf/project/polychord/)
 
-A page showing a demonstration and comparison of all the samplers on a fixed dataset can be found
+A page showing a demonstration and comparison of all the samplers on a fixed data set can be found
 [here](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/).
 
 ## Examples
@@ -37,6 +38,7 @@ Standalone examples for each sampler can be found at the links below:
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
+* [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
 * [PyMultiNest example](http://mattpitkin.github.io/samplers-demo/pages/pymultinest/)
 * [DNest4 example](http://mattpitkin.github.io/samplers-demo/pages/dnest4/)
 * [PyPolyChord example](http://mattpitkin.github.io/samplers-demo/pages/pypolychord/)

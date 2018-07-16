@@ -31,10 +31,9 @@ docker push mattpitkin/samplers:python3
 
 ## Examples
 
-Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../examples) can be run with, e.g.:
+Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../content/downloads/code) can be run with, e.g.:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo/examples:/work mattpitkin/samplers:python3
+docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/work mattpitkin/samplers:python3
 python test_emcee
 ```
-
