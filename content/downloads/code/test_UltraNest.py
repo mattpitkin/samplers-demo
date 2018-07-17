@@ -105,13 +105,13 @@ logZerrultranest = result['logZerr']  # estimate of the statistcal uncertainty o
 print(six.u('Marginalised evidence is {} \u00B1 {}'.format(logZultranest, logZerrultranest)))
 
 # get the posterior samples (first output is samples in the unit hypercube, so ignore that)
-x = np.array([xi for ui, xi, Li, logwidth in result['weights']])
+nsamples = np.array([xi for ui, xi, Li, logwidth in result['weights']])
 probs = np.array([Li + logwidth for ui, xi, Li, logwidth in result['weights']])
 probs = np.exp(probs - probs.max())
 
 keepidx = np.where(np.random.rand(len(probs)) < probs)[0]
 
-postsamples = x[keepidx,:]
+postsamples = nsamples[keepidx,:]
 
 print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
