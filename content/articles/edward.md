@@ -1,11 +1,11 @@
-Title: An example using edward
+Title: An example using Edward
 date: 2018-03-29 16:19
 comments: true
-slug: edward
-tags: edward,MCMC
+slug: Edward
+tags: Edward,MCMC
 
 <!-- PELICAN_BEGIN_SUMMARY -->
-Here we show a standalone example of using [edward](http://edwardlib.org/) to
+Here we show a standalone example of using [Edward](http://edwardlib.org/) to
 estimate the parameters of a straight line model in data with Gaussian noise. The
 data and model used in this example are defined in `createdata.py`, which can be downloaded
 from [here](http://mattpitkin.github.io/samplers-demo/downloads/code/createdata.py). The

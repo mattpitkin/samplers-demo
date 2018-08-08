@@ -13,8 +13,9 @@ The MCMC samplers used are:
    
 1. [emcee](http://dfm.io/emcee/current/)
 2. [PyMC3](http://docs.pymc.io/)
-3. [PyStan](http://pystan.readthedocs.io/en/latest/)
-4. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
+3. [Edward](http://edwardlib.org)
+4. [PyStan](http://pystan.readthedocs.io/en/latest/)
+5. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
 
 The nested sampling algorithms implementations uses are:
 
@@ -36,7 +37,7 @@ Standalone examples for each sampler can be found at the links below:
 * [PyMC3 example](http://mattpitkin.github.io/samplers-demo/pages/pymc3/)
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
-* [edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
+* [Edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
 * [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
