@@ -1,7 +1,7 @@
 Title: An example using Edward
 date: 2018-03-29 16:19
 comments: true
-slug: Edward
+slug: edward
 tags: Edward,MCMC
 
 <!-- PELICAN_BEGIN_SUMMARY -->
