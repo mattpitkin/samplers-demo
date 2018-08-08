@@ -43,7 +43,6 @@ Standalone examples for each sampler can be found at the links below:
 * [PyMultiNest example](http://mattpitkin.github.io/samplers-demo/pages/pymultinest/)
 * [DNest4 example](http://mattpitkin.github.io/samplers-demo/pages/dnest4/)
 * [PyPolyChord example](http://mattpitkin.github.io/samplers-demo/pages/pypolychord/)
-* [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
 
 Information on [Docker](https://docs.docker.com/) images that can be used to run all
 the samplers mentioned above can be found [here](http://mattpitkin.github.io/samplers-demo/pages/docker/).
