@@ -51,7 +51,7 @@ RUN pip3 install --trusted-host pypi.python.org nestle
 RUN pip3 install --trusted-host pypi.python.org cpnest
 
 # Install edward and TensorFlow
-RUN pip3 install --trusted-host pypi.python.org tensorflow edward
+RUN pip3 install --trusted-host pypi.python.org tensorflow==1.5 edward
 
 # Install MultiNest 
 ADD MultiNest_v3.10_CMake.tar.gz /samplers
