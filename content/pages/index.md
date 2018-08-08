@@ -36,6 +36,7 @@ Standalone examples for each sampler can be found at the links below:
 * [PyMC3 example](http://mattpitkin.github.io/samplers-demo/pages/pymc3/)
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
+* [edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
 * [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)

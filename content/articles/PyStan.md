@@ -27,7 +27,7 @@ python test_PyStan.py
 If you have [Matplotlib](https://matplotlib.org/) installed then the script will produce a plot of the posterior distributions
 on the straight line parameters $m$ and $c$.
 
-Python 2 and 3 Docker images with emcee installed are [available](https://hub.docker.com/r/mattpitkin/samplers/tags/), and to run with, e.g., the Python 2 container, you can do:
+Python 2 and 3 Docker images with PyStan installed are [available](https://hub.docker.com/r/mattpitkin/samplers/tags/), and to run with, e.g., the Python 2 container, you can do:
 
 ```bash
 docker run -it -v ${HOME}:/work mattpitkin/samplers:python2
