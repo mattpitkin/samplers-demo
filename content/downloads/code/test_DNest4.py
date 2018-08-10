@@ -9,7 +9,6 @@ from __future__ import print_function, division
 
 import os
 import sys
-import six
 import numpy as np
 
 # import DNest4
@@ -112,7 +111,7 @@ logZdnest4, infogaindnest4, _ = dnest4.postprocess(plot=False);
 
 postsamples = np.loadtxt('posterior_sample.txt')
 
-print(six.u('Marginalised evidence is {}'.format(logZdnest4)))
+print('Marginalised evidence is {}'.format(logZdnest4))
 
 print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 

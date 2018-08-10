@@ -9,7 +9,6 @@ from __future__ import print_function, division
 
 import os
 import sys
-import six
 from scipy.special import ndtri
 import numpy as np
 
@@ -102,7 +101,7 @@ logZultranest = result['logZ']        # value of logZ
 logZerrultranest = result['logZerr']  # estimate of the statistcal uncertainty on logZ
 
 # output marginal likelihood
-print(six.u('Marginalised evidence is {} \u00B1 {}'.format(logZultranest, logZerrultranest)))
+print('Marginalised evidence is {} ± {}'.format(logZultranest, logZerrultranest))
 
 # get the posterior samples (first output is samples in the unit hypercube, so ignore that)
 nsamples = np.array([xi for ui, xi, Li, logwidth in result['weights']])
@@ -118,4 +117,3 @@ print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 if doplot:
     fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
     fig.savefig('UltraNest.png')
-
