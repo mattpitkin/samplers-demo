@@ -40,6 +40,6 @@ docker run -it -v ${HOME}:/work mattpitkin/samplers:python2
 to enter an interactive container, and then within the contain run:
 
 ```bash
-python test_Nestle.py
+python test_dynesty.py
 ```
 
