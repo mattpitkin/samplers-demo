@@ -9,7 +9,6 @@ from __future__ import print_function, division
 
 import os
 import sys
-import six
 from scipy.special import ndtri
 import numpy as np
 
@@ -111,7 +110,7 @@ solution = StraightLineModelPyMultiNest(data, x, straight_line, sigma, n_dims=nd
 logZpymnest = solution.logZ        # value of log Z
 logZerrpymnest = solution.logZerr  # estimate of the statistcal uncertainty on logZ
 
-print(six.u('Marginalised evidence is \u00B1 {}'.format(logZpymnest, logZerrpymnest)))
+print('Marginalised evidence is ± {}'.format(logZpymnest, logZerrpymnest))
 
 mchain_pymnest = solution.samples[:,0] # extract chain of m values
 cchain_pymnest = solution.samples[:,1] # extract chain if c values
@@ -130,4 +129,3 @@ except ImportError:
 
 fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
 fig.savefig('PyMultiNest.png')
-

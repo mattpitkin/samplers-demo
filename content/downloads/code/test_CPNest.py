@@ -9,7 +9,6 @@ from __future__ import print_function, division
 
 import os
 import sys
-import six
 import numpy as np
 
 # import CPNest
@@ -123,7 +122,7 @@ logZerrcpnest = np.sqrt(infogaincpnest/nlive) # estimate of the statistcal uncer
 # get the null log likelihood (evidence that the data is Gaussian noise with zero mean, and given standard devaition)
 logZnull = work.user.log_likelihood({'m': 0., 'c': 0.})
 
-print(six.u('Marginalised evidence is {} \u00B1 {}'.format(logZcpnest, logZerrcpnest)))
+print('Marginalised evidence is {} ± {}'.format(logZcpnest, logZerrcpnest))
 
 # output the log Bayes factor
 print('log Bayes factor is {}'.format(logZcpnest - logZnull))
@@ -142,4 +141,3 @@ except ImportError:
 
 fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
 fig.savefig('CPNest.png')
-

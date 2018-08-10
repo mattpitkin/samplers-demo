@@ -9,7 +9,6 @@ from __future__ import print_function, division
 
 import os
 import sys
-import six
 from scipy.special import ndtri
 import numpy as np
 
@@ -74,7 +73,7 @@ infogainnestle = res.h                        # value of the information gain in
 logZerrnestle = np.sqrt(infogainnestle/nlive) # estimate of the statistcal uncertainty on logZ
 
 # output marginal likelihood
-print(six.u('Marginalised evidence is {} \u00B1 {}'.format(logZnestle, logZerrnestle)))
+print('Marginalised evidence is {} ± {}'.format(logZnestle, logZerrnestle))
 
 # re-scale weights to have a maximum of one
 nweights = res.weights/np.max(res.weights)

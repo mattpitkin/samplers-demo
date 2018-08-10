@@ -13,7 +13,8 @@ It installs the following samplers:
  * DNest4
  * PyPolyChord
  * UltraNest
- * edward
+ * Edward
+ * dynesty
 
 ## Docker image
 

@@ -2,7 +2,7 @@ title: Samplers demo
 slug: index
 Template: index
 
-This site aims gives a demonstration of [ten different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
+This site aims gives a demonstration of [twelve different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
 and [nested sampling](https://en.wikipedia.org/wiki/Nested_sampling_algorithm) algorithms that are
 either written in Python, or have Python-wrapper implementations. The demonstration is a simple toy
 model of estimating the posteriors on the parameters of a straight line in Gaussian noise of known variance.
@@ -21,10 +21,11 @@ The nested sampling algorithms implementations uses are:
 
 1. [Nestle](http://kylebarbary.com/nestle/)
 2. [CPNest](https://johnveitch.github.io/cpnest/)
-3. [UltraNest](https://github.com/JohannesBuchner/UltraNest)
-4. [PyMultiNest](https://johannesbuchner.github.io/PyMultiNest/)
-5. [DNest4](https://github.com/eggplantbren/DNest4)
-6. [PyPolyChord](https://ccpforge.cse.rl.ac.uk/gf/project/polychord/)
+3. [dynesty](https://dynesty.readthedocs.io)
+4. [UltraNest](https://github.com/JohannesBuchner/UltraNest)
+5. [PyMultiNest](https://johannesbuchner.github.io/PyMultiNest/)
+6. [DNest4](https://github.com/eggplantbren/DNest4)
+7. [PyPolyChord](https://ccpforge.cse.rl.ac.uk/gf/project/polychord/)
 
 A page showing a demonstration and comparison of all the samplers on a fixed data set can be found
 [here](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/).
@@ -40,6 +41,7 @@ Standalone examples for each sampler can be found at the links below:
 * [Edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
+* [dynesty example](http://mattpitkin.github.io/samplers-demo/pages/dynesty/)
 * [UltraNest example](http://mattpitkin.github.io/samplers-demo/pages/ultranest/)
 * [PyMultiNest example](http://mattpitkin.github.io/samplers-demo/pages/pymultinest/)
 * [DNest4 example](http://mattpitkin.github.io/samplers-demo/pages/dnest4/)
@@ -71,4 +73,3 @@ and suggesting a fix.
 My name is [Matthew Pitkin](http://www.astro.gla.ac.uk/~matthew) and I'm an astrophysicist working on gravitational wave data analysis in
 the [Institute for Gravitational Research](http://www.physics.gla.ac.uk/igr/) at the
 [University of Glasgow](https://www.gla.ac.uk/).
-

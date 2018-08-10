@@ -50,6 +50,9 @@ RUN pip install --trusted-host pypi.python.org nestle
 # Install CPNest
 RUN pip install --trusted-host pypi.python.org cpnest
 
+# Install dynesty
+RUN pip install --trusted-host pypi.python.org dynesty
+
 # Install edward and TensorFlow
 RUN pip install --trusted-host pypi.python.org tensorflow==1.5 edward
 
