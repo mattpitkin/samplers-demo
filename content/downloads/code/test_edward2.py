@@ -28,34 +28,29 @@ cmax = 10.  # upper range of uniform distribution on c
 mmu = 0.     # mean of Gaussian distribution on m
 msigma = 10. # standard deviation of Gaussian distribution on m
 
-# create a log-likeihood function
-def log_likelihood(x, cmin, cmax, mmu, msigma, sigma, size):
-    c = ed.Uniform(cmin, cmax, sample_shape=[1], name="c")
-    m = ed.Normal(mmu, msigma, sample_shape=[1], name="m")
+# create a log-likelihood function
+def log_likelihood(data, x, cmin, cmax, mmu, msigma, sigma, testc, testm):
+    c = tfp.distributions.Uniform(low=cmin, high=cmax, name="c")
+    m = tfp.distributions.Normal(loc=mmu, scale=msigma, name="m")
 
-    y = ed.Normal(tf.add(tf.multiply(m, x), c), sigma*tf.ones(size, dtype=tf.float32), name="y")
+    y = tfp.distributions.Normal(loc=(testm*x + testc), scale=sigma, name="y")
 
-    return y
-
-# make function
-log_joint = ed.make_log_joint_fn(log_likelihood)
+    return c.log_prob(testc) + m.log_prob(testm) + tf.reduce_sum(y.log_prob(data))
 
 # set initial state (drawn from prior)
-qc = tf.random_uniform([1], minval=cmin, maxval=cmax, dtype=tf.float32)
-qm = tf.random_normal([1], mean=mmu, stddev=msigma, dtype=tf.float32)
+qc = tf.random_uniform([], minval=cmin, maxval=cmax, dtype=tf.float32)
+qm = tf.random_normal([], mean=mmu, stddev=msigma, dtype=tf.float32)
 
 # convert x values and data to tensors
-size = len(x)
 x = tf.convert_to_tensor(x, dtype=tf.float32)
 data = tf.convert_to_tensor(data, dtype=tf.float32)
 
 def target_log_prob_fn(c, m):
     """Target log-probability as a function of states."""
-    return log_joint(x, cmin, cmax, mmu, msigma, sigma, size,
-                     c=c, m=m, y=data)
+    return log_likelihood(data, x, cmin, cmax, mmu, msigma, sigma, c, m)
 
-Nsamples = 2000 # final number of samples
-Nburn = 2000    # number of tuning samples
+Nsamples = 2000  # final number of samples
+Nburn = 2000     # number of tuning samples
 
 # set up Hamiltonian MC
 hmc_kernel = tfp.mcmc.HamiltonianMonteCarlo(
@@ -74,7 +69,7 @@ with tf.Session():
     cs = states[0].eval()
     ms = states[1].eval()
 
-postsamples = np.hstack((ms, cs))
+postsamples = np.vstack((ms, cs)).T
 print(postsamples)
 
 # plot posterior samples (if corner.py is installed)
@@ -87,4 +82,3 @@ print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
 fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
 fig.savefig('edward2.png')
-
