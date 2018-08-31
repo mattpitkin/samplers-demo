@@ -22,20 +22,19 @@ import tensorflow as tf
 # import model and data
 from createdata import *
 
-cmin = -10. # lower range of uniform distribution on c
-cmax = 10.  # upper range of uniform distribution on c
+cmin = -10.  # lower range of uniform distribution on c
+cmax = 10.   # upper range of uniform distribution on c
 
-mmu = 0.     # mean of Gaussian distribution on m
-msigma = 10. # standard deviation of Gaussian distribution on m
+mmu = 0.      # mean of Gaussian distribution on m
+msigma = 10.  # standard deviation of Gaussian distribution on m
 
 # create a log-likelihood function
-def log_likelihood(data, x, cmin, cmax, mmu, msigma, sigma, testc, testm):
-    c = tfp.distributions.Uniform(low=cmin, high=cmax, name="c")
-    m = tfp.distributions.Normal(loc=mmu, scale=msigma, name="m")
+def log_likelihood(x, cmin, cmax, mmu, msigma, sigma):
+    c = ed.Uniform(low=cmin, high=cmax, name="c")
+    m = ed.Normal(loc=mmu, scale=msigma, name="m")
 
-    y = tfp.distributions.Normal(loc=(testm*x + testc), scale=sigma, name="y")
-
-    return c.log_prob(testc) + m.log_prob(testm) + tf.reduce_sum(y.log_prob(data))
+    y = ed.Normal(loc=(m*x + c), scale=sigma, name="y")
+    return y
 
 # set initial state (drawn from prior)
 qc = tf.random_uniform([], minval=cmin, maxval=cmax, dtype=tf.float32)
@@ -45,9 +44,13 @@ qm = tf.random_normal([], mean=mmu, stddev=msigma, dtype=tf.float32)
 x = tf.convert_to_tensor(x, dtype=tf.float32)
 data = tf.convert_to_tensor(data, dtype=tf.float32)
 
+# make function
+log_joint = ed.make_log_joint_fn(log_likelihood)
+
 def target_log_prob_fn(c, m):
     """Target log-probability as a function of states."""
-    return log_likelihood(data, x, cmin, cmax, mmu, msigma, sigma, c, m)
+    return log_joint(x, cmin, cmax, mmu, msigma, sigma, c=c, m=m,
+                     y=data)
 
 Nsamples = 2000  # final number of samples
 Nburn = 2000     # number of tuning samples
@@ -58,18 +61,21 @@ hmc_kernel = tfp.mcmc.HamiltonianMonteCarlo(
     step_size=0.015,
     num_leapfrog_steps=5)
 
-states, kernels_results = tfp.mcmc.sample_chain(
+states, kernel_results = tfp.mcmc.sample_chain(
     num_results=Nsamples,
     current_state=[qc, qm],
     kernel=hmc_kernel,
     num_burnin_steps=Nburn)
 
-# extract the samples
-with tf.Session():
-    cs = states[0].eval()
-    ms = states[1].eval()
+# run the session to extract the samples
+with tf.Session() as sess:
+    states, is_accepted_ = sess.run([states, kernel_results.is_accepted])
+    accepted = np.sum(is_accepted_)
+    print("Acceptance rate: {}".format(accepted / Nsamples))
 
-postsamples = np.vstack((ms, cs)).T
+results = dict(zip(['c', 'm'], states))
+
+postsamples = np.vstack((results['m'], results['c'])).T
 print(postsamples)
 
 # plot posterior samples (if corner.py is installed)
