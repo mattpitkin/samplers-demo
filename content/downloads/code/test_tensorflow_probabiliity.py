@@ -87,4 +87,4 @@ except ImportError:
 print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
 fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
-fig.savefig('edward2.png')
+fig.savefig('tensorflow_probability.png')
