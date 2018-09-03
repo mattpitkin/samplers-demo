@@ -2,7 +2,7 @@ title: Samplers demo
 slug: index
 Template: index
 
-This site aims gives a demonstration of [twelve different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
+This site aims gives a demonstration of [fourteen different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
 and [nested sampling](https://en.wikipedia.org/wiki/Nested_sampling_algorithm) algorithms that are
 either written in Python, or have Python-wrapper implementations. The demonstration is a simple toy
 model of estimating the posteriors on the parameters of a straight line in Gaussian noise of known variance.
@@ -14,8 +14,10 @@ The MCMC samplers used are:
 1. [emcee](http://dfm.io/emcee/current/)
 2. [PyMC3](http://docs.pymc.io/)
 3. [Edward](http://edwardlib.org)
-4. [PyStan](http://pystan.readthedocs.io/en/latest/)
-5. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
+4. [TensorFlow Probability](https://www.tensorflow.org/probability/)
+5. [PyMC4](https://github.com/pymc-devs/pymc4/)
+6. [PyStan](http://pystan.readthedocs.io/en/latest/)
+7. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
 
 The nested sampling algorithms implementations uses are:
 
@@ -39,6 +41,8 @@ Standalone examples for each sampler can be found at the links below:
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
 * [Edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
+* [TensorFlow Probability example](http://mattpitkin.github.io/samplers-demo/pages/tensorflow-probability/)
+* [PyMC4 example](http://mattpitkin.github.io/samplers-demo/pages/pymc4/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
 * [dynesty example](http://mattpitkin.github.io/samplers-demo/pages/dynesty/)
@@ -65,7 +69,7 @@ and any problems/suggestions can be submitted as
 here.
 
 Also deserving thanks are: [Chris Pankow](https://github.com/cpankow) for spotting and fixing many typos and adding useful information to the
-emcee section of the sampler demonstration page; and, [João Faria](https://github.com/j-faria) for spotting a problem with the DNest4 example
+[emcee section](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/#emcee) of the sampler demonstration page; and, [João Faria](https://github.com/j-faria) for spotting a problem with the DNest4 example
 and suggesting a fix.
 
 ### The author

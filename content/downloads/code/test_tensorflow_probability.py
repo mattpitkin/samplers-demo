@@ -30,15 +30,15 @@ msigma = 10.  # standard deviation of Gaussian distribution on m
 
 # create a log-likelihood function
 def log_likelihood(x, cmin, cmax, mmu, msigma, sigma):
-    c = ed.Uniform(low=cmin, high=cmax, name="c")
     m = ed.Normal(loc=mmu, scale=msigma, name="m")
+    c = ed.Uniform(low=cmin, high=cmax, name="c")
 
     y = ed.Normal(loc=(m*x + c), scale=sigma, name="y")
     return y
 
 # set initial state (drawn from prior)
-qc = tf.random_uniform([], minval=cmin, maxval=cmax, dtype=tf.float32)
 qm = tf.random_normal([], mean=mmu, stddev=msigma, dtype=tf.float32)
+qc = tf.random_uniform([], minval=cmin, maxval=cmax, dtype=tf.float32)
 
 # convert x values and data to tensors
 x = tf.convert_to_tensor(x, dtype=tf.float32)
@@ -47,9 +47,9 @@ data = tf.convert_to_tensor(data, dtype=tf.float32)
 # make function
 log_joint = ed.make_log_joint_fn(log_likelihood)
 
-def target_log_prob_fn(c, m):
+def target_log_prob_fn(m, c):
     """Target log-probability as a function of states."""
-    return log_joint(x, cmin, cmax, mmu, msigma, sigma, c=c, m=m,
+    return log_joint(x, cmin, cmax, mmu, msigma, sigma, m=m, c=c,
                      y=data)
 
 Nsamples = 2000  # final number of samples
@@ -58,12 +58,12 @@ Nburn = 2000     # number of tuning samples
 # set up Hamiltonian MC
 hmc_kernel = tfp.mcmc.HamiltonianMonteCarlo(
     target_log_prob_fn=target_log_prob_fn,
-    step_size=0.015,
+    step_size=0.01,
     num_leapfrog_steps=5)
 
 states, kernel_results = tfp.mcmc.sample_chain(
     num_results=Nsamples,
-    current_state=[qc, qm],
+    current_state=[qm, qc],
     kernel=hmc_kernel,
     num_burnin_steps=Nburn)
 
@@ -73,7 +73,7 @@ with tf.Session() as sess:
     accepted = np.sum(is_accepted_)
     print("Acceptance rate: {}".format(accepted / Nsamples))
 
-results = dict(zip(['c', 'm'], states))
+results = dict(zip(['m', 'c'], states))
 
 postsamples = np.vstack((results['m'], results['c'])).T
 print(postsamples)

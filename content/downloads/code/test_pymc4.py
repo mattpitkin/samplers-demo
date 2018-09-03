@@ -48,8 +48,11 @@ def process(cfg):
 # add observed data
 pymc4_linear_regression.observe(y=data)
 
-pymc4_trace = pm4.sample(pymc4_linear_regression, num_results=2000,
-                         num_burnin_steps=2000, step_size=0.015,
+Nsamples = 2000  # final number of samples
+Nburn = 2000     # number of tuning samples
+
+pymc4_trace = pm4.sample(pymc4_linear_regression, num_results=Nsamples,
+                         num_burnin_steps=Nburn, step_size=0.01,
                          num_leapfrog_steps=5)
 
 postsamples = np.vstack((pymc4_trace['m'], pymc4_trace['c'])).T
