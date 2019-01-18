@@ -14,9 +14,9 @@ import numpy as np
 import resource
 
 # import PolyChord
-import PyPolyChord
-from PyPolyChord.settings import PolyChordSettings
-from PyPolyChord.priors import UniformPrior
+import pypolychord
+from pypolychord.settings import PolyChordSettings
+from pypolychord.priors import UniformPrior
 
 # import model and data
 from createdata import *
@@ -106,7 +106,7 @@ pargs = {'nlive': nlive,
 settings = PolyChordSettings(ndims, nderived, **pargs)
 
 # run nested sampling
-output = PyPolyChord.run_polychord(loglikelihood_polychord, ndims, nderived, settings, prior_transform_polychord)
+output = pypolychord.run_polychord(loglikelihood_polychord, ndims, nderived, settings, prior_transform_polychord)
 
 # reset stack resource size
 resource.setrlimit(resource.RLIMIT_STACK, curlimit)
@@ -130,3 +130,4 @@ print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
 fig = corner.corner(postsamples, labels=[r"$m$", r"$c$"], truths=[m, c])
 fig.savefig('PyPolyChord.png')
+
