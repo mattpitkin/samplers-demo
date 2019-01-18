@@ -56,10 +56,10 @@ RUN pip3 install --trusted-host pypi.python.org dynesty
 # Install edward and TensorFlow
 RUN pip3 install --trusted-host pypi.python.org tensorflow==1.5 edward
 
-# Install MultiNest 
-ADD MultiNest_v3.10_CMake.tar.gz /samplers
-RUN cd MultiNest_v3.10_CMake/multinest/build \
-    && cmake .. && make && make install && cd
+# Install MultiNest
+RUN cd /samplers && git clone https://github.com/farhanferoz/MultiNest.git
+RUN cd /samplers/MultiNest/MultiNest_v3.11_CMake/multinest && mkdir build && cd build \
+    && cmake .. && make && cd
 
 # Install PyMultiNest
 RUN pip3 install --trusted-host pypi.python.org pymultinest
@@ -69,10 +69,10 @@ RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
 RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
 
 # Add PolyChord
-ADD PolyChord_v1.12.tar.gz /samplers
+RUN cd /samplers && git clone https://github.com/PolyChord/PolyChordLite.git
 
 # Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd /samplers/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd lib/libchord.so | grep -o '/.*libmpi.so[^/]* ' | awk '{print "export LD_PRELOAD="$$1":$$LD_PRELOAD"}' > PyPolyChord/.ld_preload.sh; python3 setup.py install
+RUN cd /samplers/PolyChordLite && make pypolychord MPI= && python3 setup.py install
 
 # Add getdist package for reading in PolyChord output
 RUN pip3 install --trusted-host pypi.python.org getdist
@@ -83,10 +83,10 @@ RUN pip3 install --trusted-host pypi.python.org metric-learn progressbar-latest
 
 RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
 RUN cd /samplers/UltraNest && python3 setup.py install --prefix=/usr/local
-RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python3.5/dist-packages/nested_sampling/clustering
+RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python3.5/dist-packages/nested_sampling-*.egg/nested_sampling/clustering
 
 # add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChord/lib:/samplers/UltraNest/nested_sampling/clustering
+ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChordLite/lib:/samplers/UltraNest/nested_sampling/clustering:/samplers/MultiNest/MultiNest_v3.11_CMake/multinest/lib
 ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages/nested_sampling
 
 # update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)

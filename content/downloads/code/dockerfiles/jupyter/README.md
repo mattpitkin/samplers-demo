@@ -17,7 +17,7 @@ It installs the following samplers:
  * Edward
  * dynesty
 
-The container can create notebooks using either a Python 2 or Python 3 kernel.
+The container can only create notebooks using the Python 3 kernel.
 
 ## Docker image
 
