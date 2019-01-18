@@ -24,6 +24,7 @@ RUN apt-get -y autoremove \
 USER $NB_USER
 RUN conda install -y numpy
 RUN conda install -y scipy
+RUN conda install -y mkl-service
 USER root
 
 # Install matplotlib, corner and cpuinfo
@@ -34,13 +35,13 @@ RUN pip install --trusted-host pypi.python.org matplotlib corner py-cpuinfo
 RUN pip install --trusted-host pypi.python.org pyjags
 
 # Install emcee
-RUN pip install --trusted-host pypi.python.org emcee
+RUN pip install --upgrade --trusted-host pypi.python.org emcee --pre
 
 # Install PyStan
 RUN pip install --trusted-host pypi.python.org pystan
 
-# Install PyMC3 (use pre-release version as version 3.4.1 has a bug)
-RUN pip install --trusted-host pypi.python.org --pre pymc3
+# Install PyMC3
+RUN pip install --trusted-host pypi.python.org pymc3
 
 # Install Nestle
 RUN pip install --trusted-host pypi.python.org nestle
@@ -54,10 +55,10 @@ RUN pip install --trusted-host pypi.python.org dynesty
 # Install edward and TensorFlow (v1.5 as later version break Edward v1.3.5)
 RUN pip install --trusted-host pypi.python.org tensorflow==1.5 edward
 
-# Install MultiNest 
-ADD MultiNest_v3.10_CMake.tar.gz /samplers
-RUN cd MultiNest_v3.10_CMake/multinest/build \
-    && cmake .. && make && make install && cd
+# Install MultiNest
+RUN cd ${HOME} && git clone https://github.com/farhanferoz/MultiNest.git
+RUN cd ${HOME}/MultiNest/MultiNest_v3.11_CMake/multinest && mkdir build && cd build \
+&& cmake .. && make && cd
 
 # Install PyMultiNest
 RUN pip install --trusted-host pypi.python.org pymultinest
@@ -73,11 +74,11 @@ RUN cd ${HOME}/DNest4/python && python setup.py install --prefix=/opt/conda \
 # set working directory as "/home/jovyan/work"
 WORKDIR ${HOME}/work
 
-# Add PolyChord (don't install for Python 3 as it does not work yet)
-ADD PolyChord_v1.12.tar.gz ${HOME}
+# Add PolyChord
+RUN cd ${HOME} && git clone https://github.com/PolyChord/PolyChordLite.git
 
 # Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd ${HOME}/PolyChord && make MPI= && touch PyPolyChord/.ld_preload.sh; ldd lib/libchord.so | grep -o '/.*libmpi.so[^/]* ' | awk '{print "export LD_PRELOAD="$$1":$$LD_PRELOAD"}' > PyPolyChord/.ld_preload.sh; python setup.py install && chmod -R a+rw ${HOME}/PolyChord
+RUN cd ${HOME}/PolyChordLite && make pypolychord MPI= && python setup.py install && chmod -R a+rw ${HOME}/PolyChordLite
 
 # Install getdist for PolyChord post-processing
 RUN pip install --trusted-host pypi.python.org getdist
@@ -89,19 +90,10 @@ RUN pip install --trusted-host pypi.python.org metric-learn progressbar-latest
 RUN cd ${HOME} && git clone https://github.com/JohannesBuchner/UltraNest.git
 RUN chown -R $NB_USER ${HOME}/UltraNest
 RUN cd ${HOME}/UltraNest && python setup.py install --prefix=/opt/conda
-RUN cd ${HOME}/UltraNest/nested_sampling/clustering && make && cp *.so /opt/conda/lib/python3.6/site-packages/nested_sampling/clustering
+RUN cd ${HOME}/UltraNest/nested_sampling/clustering && make && cp *.so /opt/conda/lib/python3.6/site-packages/nested_sampling-*.egg/nested_sampling/clustering
 
-ENV PYTHONPATH /opt/conda/lib/python3.6/site-packages/nested_sampling
-
-# switch back to non-root user
-USER $NB_USER
-
-# add Python 2 kernel for Jupyter notebook (PyPolyChord needs Python 2 at the moment, disable MPI for PolyChord)
-RUN conda create -y -n py27 python=2.7 && /bin/bash -c "source activate py27; conda install -y notebook ipykernel; conda install -y numpy; conda install -y scipy; pip install matplotlib corner; pip install --pre pymc3; pip install emcee pystan pyjags pymultinest nestle cpnest getdist metric-learn progressbar-latest py-cpuinfo tensorflow==1.5 edward dynesty; cd ${HOME}/DNest4/python; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/PolyChord; python setup.py install --prefix=/opt/conda/envs/py27; cd ${HOME}/UltraNest; python setup.py install --prefix=/opt/conda/envs/py27; cp nested_sampling/clustering/*.so /opt/conda/envs/py27/lib/python2.7/site-packages/nested_sampling/clustering; ipython kernel install --user; mkdir -p /opt/conda/envs/py27/etc/conda; echo \"PYTHONPATH=/opt/conda/envs/py27/lib/python2.7/site-packages/nested_sampling\" > /opt/conda/envs/py27/etc/conda/activate.d"
-
-USER root
 # add global environment variables
-RUN echo "LD_LIBRARY_PATH=/usr/local/lib:${HOME}/PolyChord/lib" >> /etc/environment
+RUN echo "LD_LIBRARY_PATH=/usr/local/lib:${HOME}/PolyChordLite/lib:${HOME}/MultiNest/MultiNest_v3.11_CMake/multinest/lib" >> /etc/environment
 
 # switch back to non-root user
 USER $NB_USER

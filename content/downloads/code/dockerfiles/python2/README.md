@@ -33,5 +33,5 @@ Assuming that you have downloaded this repository to the location `${HOME}/repos
 
 ```bash
 docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/work mattpitkin/samplers:python2
-python test_PyPolyChord
+python test_PyPolyChord.py
 ```

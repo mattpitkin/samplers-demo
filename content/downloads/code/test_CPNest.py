@@ -110,7 +110,7 @@ nthreads = 1      # use one CPU core
 
 # set up the algorithm
 work = cpnest.CPNest(StraightLineModel(data, x, straight_line, sigma), verbose=0,
-                     Nthreads=nthreads, Nlive=nlive, maxmcmc=maxmcmc);
+                     nthreads=nthreads, nlive=nlive, maxmcmc=maxmcmc);
 
 # run the algorithm
 work.run();

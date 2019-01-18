@@ -12,6 +12,12 @@ import sys
 from scipy.special import ndtri
 import numpy as np
 
+try:
+    import matplotlib as mpl
+    mpl.use('Agg')
+except ImportError:
+    pass
+
 # import PyMultiNest Solver class
 from pymultinest.solve import Solver
 
@@ -121,8 +127,6 @@ print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
 # plot posterior samples (if corner.py is installed)
 try:
-    import matplotlib as mpl
-    mpl.use("Agg") # force Matplotlib backend to Agg
     import corner # import corner.py
 except ImportError:
     sys.exit(1)
