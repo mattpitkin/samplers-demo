@@ -117,7 +117,7 @@ cchain_pymnest = solution.samples[:,1] # extract chain if c values
 
 postsamples = np.vstack((mchain_pymnest, cchain_pymnest)).T
 
-print('Number of posterior samples is {}'.format(samples_pymnest.shape[0]))
+print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
 # plot posterior samples (if corner.py is installed)
 try:
