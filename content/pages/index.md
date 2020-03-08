@@ -74,6 +74,6 @@ and suggesting a fix.
 
 ### The author
 
-My name is [Matthew Pitkin](http://www.astro.gla.ac.uk/~matthew) and I'm an astrophysicist working on gravitational wave data analysis in
-the [Institute for Gravitational Research](http://www.physics.gla.ac.uk/igr/) at the
-[University of Glasgow](https://www.gla.ac.uk/).
+My name is [Matthew Pitkin](https://ma.ttpitk.in) and I'm an astrophysicist working on gravitational-wave data analysis in
+the [Department of Physics](https://www.lancaster.ac.uk/physics/) at the
+[Lancaster University](https://www.lancaster.ac.uk).
