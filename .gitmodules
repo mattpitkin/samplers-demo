@@ -1,6 +1,7 @@
-[submodule "plugins/pelican-plugins"]
-	path = plugins/pelican-plugins
-	url = https://github.com/mattpitkin/pelican-plugins
 [submodule "mattpitkin.github.io"]
 	path = mattpitkin.github.io
 	url = https://github.com/mattpitkin/mattpitkin.github.io
+[submodule "plugins/pelican-plugins"]
+	path = plugins/pelican-plugins
+	url = git@github.com:mattpitkin/pelican-plugins.git
+	branch = master
