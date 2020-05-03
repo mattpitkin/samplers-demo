@@ -1,8 +1,8 @@
-# Docker Image: Ubuntu 16.04, Python 3.5.2
+# Docker Image: Debian Buster, Python 3.7
 
-This Dockerfile creates an image using Ubuntu 16.04 with Python 3.5.2.
+This Dockerfile is based on [`continuumio/miniconda3`](https://hub.docker.com/r/continuumio/miniconda3) and created a `python3.7` conda environment.
 
-It installs the following samplers:
+Within this environment it installs the following samplers:
  * emcee
  * PyMC3
  * PySTAN
@@ -13,8 +13,10 @@ It installs the following samplers:
  * DNest4
  * PyPolyChord
  * UltraNest
- * Edward
+ * TensorFlow Probability
  * dynesty
+ * Pyro
+ * PyMC4
 
 ## Docker image
 
@@ -29,9 +31,10 @@ docker push mattpitkin/samplers:python3
 
 ## Examples
 
-Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../content/downloads/code) can be run with, e.g.:
+Assuming that you have downloaded this repository to the location `${HOME}/repositories/samplers-demo`, then the [examples](../../content/downloads/code) can be run with, e.g.,:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/work mattpitkin/samplers:python3
-python test_emcee.py
+docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/samplers mattpitkin/samplers:python3
+> cd samplers
+> python test_emcee.py
 ```

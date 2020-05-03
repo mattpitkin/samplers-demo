@@ -1,19 +1,27 @@
-FROM ubuntu:xenial
-# installs Ubuntu 16.04
+FROM continuumio/miniconda3
+LABEL name="samplers-demo miniconda3" \
+maintainer="Matthew Pitkin <matthew.pitkin@ligo.org>" \
+date="20200205"
 
-WORKDIR /samplers
+RUN conda update -n base -c defaults conda
 
-### Distribution package installs
+ENV conda_env python37
+
+RUN conda create -n ${conda_env} python=3.7
+RUN echo "source activate ${conda_env}" > ~/.bashrc
+ENV PATH /opt/conda/envs/${conda_env}/bin:$PATH
+RUN /bin/bash -c "source activate ${conda_env}"
+RUN conda info
+RUN python --version
+
+# Install some requirements
 RUN apt-get update
-
-# install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
-RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng
+RUN apt-get install -y libblas3 libblas-dev liblapack3 liblapack-dev \
+libatlas3-base libatlas-base-dev cmake build-essential gfortran git \
+ git pkg-config libmpich-dev libopenmpi-dev dvipng r-base
 
 # install light(ish) weight LaTeX
 RUN apt-get install -y --no-install-recommends texlive texlive-latex-extra
-
-# install pip
-RUN apt-get install -y python3 python3-dev python3-pip python3-tk
 
 # Install JAGS
 RUN apt-get install -y jags
@@ -22,79 +30,85 @@ RUN apt-get install -y jags
 RUN apt-get -y autoremove \
     && apt-get -y clean
 
-### Python modules installed via conda and pip
-RUN pip3 install --upgrade pip
+# Install conda-installable programs
+RUN conda install -n ${conda_env} -y matplotlib numpy scipy pandas ipython
 
-# Install numpy, scipy, matplotlib and corner
-RUN pip3 install --trusted-host pypi.python.org numpy scipy matplotlib corner
+# Install pip-requirements
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools coverage-badge
 
-# Install IPython Kernel
-RUN pip3 install --trusted-host pypi.python.org ipykernel
+# intall kernel for Jupyter notebooks
+RUN pip install ipykernel
+
+# Install some sampler dependencies
+RUN pip install corner theano cython
 
 # Install samplers
 # Install PyJAGS from PyPI
-RUN pip3 install --trusted-host pypi.python.org pyjags
+RUN pip install --trusted-host pypi.python.org pyjags
 
 # Install emcee
-RUN pip3 install --trusted-host pypi.python.org emcee
+RUN pip install --trusted-host pypi.python.org emcee
 
 # Install PyStan
-RUN pip3 install --trusted-host pypi.python.org pystan
+RUN pip install --trusted-host pypi.python.org pystan
+
+# Install YAPS
+RUN pip install --trusted-host pypi.python.org yaps
 
 # Install PyMC3
-RUN pip3 install --trusted-host pypi.python.org pymc3
+RUN pip install --trusted-host pypi.python.org pymc3
 
 # Install Nestle
-RUN pip3 install --trusted-host pypi.python.org nestle
+RUN pip install --trusted-host pypi.python.org nestle
 
 # Install CPNest
-RUN pip3 install --trusted-host pypi.python.org cpnest
+RUN pip install --trusted-host pypi.python.org cpnest
 
 # Install dynesty
-RUN pip3 install --trusted-host pypi.python.org dynesty
+RUN pip install --trusted-host pypi.python.org dynesty
 
-# Install edward and TensorFlow
-RUN pip3 install --trusted-host pypi.python.org tensorflow==1.5 edward
+# Install edward2 and TensorFlow Probability
+RUN pip install tensorflow-probability edward2
 
 # Install MultiNest
-RUN cd /samplers && git clone https://github.com/farhanferoz/MultiNest.git
-RUN cd /samplers/MultiNest/MultiNest_v3.11_CMake/multinest && mkdir build && cd build \
-    && cmake .. && make && cd
+RUN git clone https://github.com/farhanferoz/MultiNest.git \
+&& (cd MultiNest/MultiNest_v3.12_CMake/multinest && mkdir build && cd build && cmake .. && make)
+
+ENV LD_LIBRARY_PATH $HOME/MultiNest/MultiNest_v3.12_CMake/multinest/lib:
 
 # Install PyMultiNest
-RUN pip3 install --trusted-host pypi.python.org pymultinest
+RUN pip install --trusted-host pypi.python.org pymultinest
 
-# Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
-RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
+# Install DNest4
+RUN git clone https://github.com/eggplantbren/DNest4.git \
+&& (cd DNest4 && python setup.py install)
 
 # Add PolyChord
-RUN cd /samplers && git clone https://github.com/PolyChord/PolyChordLite.git
+RUN git clone https://github.com/PolyChord/PolyChordLite.git \
+&& (cd PolyChordLite && make pypolychord  MPI= && python setup.py install)
 
-# Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd /samplers/PolyChordLite && make pypolychord MPI= && python3 setup.py install
+# Install Zeus
+RUN pip install zeus-mcmc
 
-# Add getdist package for reading in PolyChord output
-RUN pip3 install --trusted-host pypi.python.org getdist
+# Install Sampyl
+RUN pip install sampyl-mcmc
 
-# Install UltraNest
-# first install metric-learn and progressbar-latest, which are required by UltraNest
-RUN pip3 install --trusted-host pypi.python.org metric-learn progressbar-latest
+# Install PTMCMCSampler
+RUN git clone https://github.com/jellis18/PTMCMCSampler.git \
+&& (cd PTMCMCSampler && python setup.py install)
 
-RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
-RUN cd /samplers/UltraNest && python3 setup.py install --prefix=/usr/local
-RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python3.5/dist-packages/nested_sampling-*.egg/nested_sampling/clustering
+# Install ptemcee
+RUN pip install ptemcee
 
-# add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChordLite/lib:/samplers/UltraNest/nested_sampling/clustering:/samplers/MultiNest/MultiNest_v3.11_CMake/multinest/lib
-ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages/nested_sampling
+# Install rpy2 (get slightly older version, see https://stackoverflow.com/q/61491298/1862861) and MCMC package
+RUN wget https://cran.r-project.org/src/contrib/mcmc_0.9-7.tar.gz \
+&& R CMD INSTALL mcmc_0.9-7.tar.gz
+RUN pip install rpy2==3.2.0
 
-# update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+# Install Pyro
+RUN pip install torch
+RUN pip install pyro-ppl
 
-# set PYTHONIOENCODING to utf-8
-ENV PYTHONIOENCODING utf-8
-
-# change to new working directory
-WORKDIR /work
+# Install PyMC4
+RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
