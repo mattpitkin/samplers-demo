@@ -27,15 +27,15 @@ python test_CPNest.py
 If you have [Matplotlib](https://matplotlib.org/) installed then the script will produce a plot of the posterior distributions
 on the straight line parameters $m$ and $c$.
 
-Python 2 and 3 Docker images with CPNest installed are [available](https://hub.docker.com/r/mattpitkin/samplers/tags/), and to run with, e.g., the Python 2 container, you can do:
+A Python 3 Docker image with CPNest installed is
+[available](https://hub.docker.com/r/mattpitkin/samplers/tags/), which can be used with:
 
 ```bash
-docker run -it -v ${HOME}:/work mattpitkin/samplers:python2
+docker run -it -v ${HOME}:/work mattpitkin/samplers:python3
 ```
 
-to enter an interactive container, and then within the contain run:
+to enter an interactive container, and then within the container the test script can be run with:
 
 ```bash
 python test_CPNest.py
 ```
-

@@ -38,4 +38,3 @@ to enter an interactive container, and then within the contain run:
 ```bash
 python test_edward.py
 ```
-
