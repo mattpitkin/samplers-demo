@@ -17,17 +17,17 @@ Within this environment it installs the following packages:
  * [ptemcee](https://github.com/willvousden/ptemcee)
  * [PTMCMCSampler](http://jellis18.github.io/PTMCMCSampler/)
  * [PyJAGS](https://github.com/michaelnowotny/pyjags)
- * PyMC3
- * PyMC4
- * PyMultiNest
- * PyPolyChord
- * PySTAN
- * Pyro
- * Sampyl
- * TensorFlow Probability
- * UltraNest
- * YAPS
- * Zeus
+ * [PyMC3](https://docs.pymc.io/)
+ * [PyMC4](https://github.com/pymc-devs/pymc4)
+ * [PyMultiNest](https://johannesbuchner.github.io/PyMultiNest/)
+ * [PyPolyChord](https://github.com/PolyChord/PolyChordLite)
+ * [PySTAN](https://pystan.readthedocs.io/en/latest/)
+ * [Pyro](http://docs.pyro.ai/en/stable/index.html)
+ * [Sampyl](http://mcleonard.github.io/sampyl/)
+ * [TensorFlow Probability](https://www.tensorflow.org/probability)
+ * [UltraNest](https://johannesbuchner.github.io/UltraNest/index.html)
+ * [YAPS](https://github.com/IBM/yaps)
+ * [Zeus](https://github.com/minaskar/zeus)
 
 ## Docker image
 

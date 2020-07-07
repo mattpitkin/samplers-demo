@@ -116,3 +116,10 @@ RUN pip install pyro-ppl
 
 # Install PyMC4
 RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
+
+# Install Jupyter
+RUN conda install -n ${conda_env} jupyter -y --quiet
+
+# create IPython kernel
+RUN python -m ipykernel install --user --name ${conda_env} --display-name "Samplers"
+
