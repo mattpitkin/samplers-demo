@@ -1,19 +1,28 @@
-FROM ubuntu:xenial
-# installs Ubuntu 16.04
+FROM continuumio/miniconda3
+LABEL name="samplers-demo miniconda3" \
+maintainer="Matthew Pitkin <matthew.pitkin@ligo.org>" \
+date="20200205"
 
-WORKDIR /samplers
+RUN conda update -n base -c defaults conda
 
-### Distribution package installs
+ENV conda_env python37
+
+RUN conda create -n ${conda_env} python=3.7
+RUN echo "source activate ${conda_env}" > ~/.bashrc
+ENV PATH /opt/conda/envs/${conda_env}/bin:$PATH
+RUN /bin/bash -c "source activate ${conda_env}"
+RUN conda info
+RUN python --version
+
+# bug fix - see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932168
+RUN sed -i "s#deb http://security.debian.org/debian-security stretch/updates main#deb http://deb.debian.org/debian-security stretch/updates main#g" /etc/apt/sources.list
+
+# Install some requirements
 RUN apt-get update
-
-# install git and gfortran, pkg-config, BLAS, cmake, libmpich-dev
-RUN apt-get install -y git gfortran pkg-config libblas-dev liblapack-dev libmpich-dev cmake libopenmpi-dev dvipng
+RUN apt-get install -y build-essential git dvipng r-base
 
 # install light(ish) weight LaTeX
 RUN apt-get install -y --no-install-recommends texlive texlive-latex-extra
-
-# install pip
-RUN apt-get install -y python3 python3-dev python3-pip python3-tk
 
 # Install JAGS
 RUN apt-get install -y jags
@@ -22,79 +31,95 @@ RUN apt-get install -y jags
 RUN apt-get -y autoremove \
     && apt-get -y clean
 
-### Python modules installed via conda and pip
-RUN pip3 install --upgrade pip
+# Install conda-installable programs
+RUN conda install -n ${conda_env} -y matplotlib numpy scipy pandas ipython cython
 
-# Install numpy, scipy, matplotlib and corner
-RUN pip3 install --trusted-host pypi.python.org numpy scipy matplotlib corner
+# Install corner
+RUN conda install -n ${conda_env} -c conda-forge corner
 
-# Install IPython Kernel
-RUN pip3 install --trusted-host pypi.python.org ipykernel
-
-# Install samplers
-# Install PyJAGS from PyPI
-RUN pip3 install --trusted-host pypi.python.org pyjags
-
-# Install emcee
-RUN pip3 install --trusted-host pypi.python.org emcee
-
-# Install PyStan
-RUN pip3 install --trusted-host pypi.python.org pystan
-
-# Install PyMC3
-RUN pip3 install --trusted-host pypi.python.org pymc3
-
-# Install Nestle
-RUN pip3 install --trusted-host pypi.python.org nestle
+# Install some conda-installable samplers
+# Install ultranest
+RUN conda install -n ${conda_env} -c conda-forge ultranest
 
 # Install CPNest
-RUN pip3 install --trusted-host pypi.python.org cpnest
+RUN conda install -n ${conda_env} -c conda-forge cpnest
 
 # Install dynesty
-RUN pip3 install --trusted-host pypi.python.org dynesty
+RUN conda install -n ${conda_env} -c conda-forge dynesty
 
-# Install edward and TensorFlow
-RUN pip3 install --trusted-host pypi.python.org tensorflow==1.5 edward
-
-# Install MultiNest
-RUN cd /samplers && git clone https://github.com/farhanferoz/MultiNest.git
-RUN cd /samplers/MultiNest/MultiNest_v3.11_CMake/multinest && mkdir build && cd build \
-    && cmake .. && make && cd
+# Install Nestle
+RUN conda install -n ${conda_env} -c conda-forge nestle
 
 # Install PyMultiNest
-RUN pip3 install --trusted-host pypi.python.org pymultinest
+RUN conda install -n ${conda_env} -c conda-forge pymultinest
 
-# Install DNest4 (and clean up so that Python2 install can also proceed)
-RUN cd /samplers && git clone https://github.com/eggplantbren/DNest4.git
-RUN cd /samplers/DNest4/python && python3 setup.py install --prefix=/usr/local
+# Install DNest4
+RUN conda install -n ${conda_env} -c conda-forge dnest4
+
+# Install PyMC3
+RUN conda install -n ${conda_env} -c conda-forge pymc3
+
+# Install emcee
+RUN conda install -n ${conda_env} -c conda-forge emcee
+
+# Install ptemcee
+RUN conda install -n ${conda_env} -c conda-forge ptemcee
+
+# Install PySTAN
+RUN conda install -n ${conda_env} -c conda-forge pystan
+
+# Install bilby
+RUN conda install -n ${conda_env} -c conda-forge bilby
+
+# Install pip-requirements
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
+
+# intall kernel for Jupyter notebooks
+RUN pip install ipykernel
+
+# Install samplers using pip
+# Install PyJAGS
+RUN pip install --trusted-host pypi.python.org pyjags
+
+# Install YAPS
+RUN pip install --trusted-host pypi.python.org yaps
+
+# Install edward2 and TensorFlow Probability
+RUN pip install tensorflow-probability edward2
 
 # Add PolyChord
-RUN cd /samplers && git clone https://github.com/PolyChord/PolyChordLite.git
+RUN git clone https://github.com/PolyChord/PolyChordLite.git \
+&& (cd PolyChordLite && python setup.py --no-mpi install)
 
-# Install PyPolyChord (don't use the make file, use setup.py)
-RUN cd /samplers/PolyChordLite && make pypolychord MPI= && python3 setup.py install
+# Install Zeus
+RUN pip install zeus-mcmc
 
-# Add getdist package for reading in PolyChord output
-RUN pip3 install --trusted-host pypi.python.org getdist
+# Install Sampyl
+RUN pip install sampyl-mcmc
 
-# Install UltraNest
-# first install metric-learn and progressbar-latest, which are required by UltraNest
-RUN pip3 install --trusted-host pypi.python.org metric-learn progressbar-latest
+# Install Mici
+RUN pip install mici
 
-RUN cd /samplers && git clone https://github.com/JohannesBuchner/UltraNest.git
-RUN cd /samplers/UltraNest && python3 setup.py install --prefix=/usr/local
-RUN cd /samplers/UltraNest/nested_sampling/clustering && make && cp *.so /usr/local/lib/python3.5/dist-packages/nested_sampling-*.egg/nested_sampling/clustering
+# Install PTMCMCSampler
+RUN git clone https://github.com/jellis18/PTMCMCSampler.git \
+&& (cd PTMCMCSampler && python setup.py install)
 
-# add global environment variables
-ENV LD_LIBRARY_PATH /usr/local/lib:/samplers/PolyChordLite/lib:/samplers/UltraNest/nested_sampling/clustering:/samplers/MultiNest/MultiNest_v3.11_CMake/multinest/lib
-ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages/nested_sampling
+# Install rpy2 (get slightly older version, see https://stackoverflow.com/q/61491298/1862861) and MCMC package
+RUN wget https://cran.r-project.org/src/contrib/mcmc_0.9-7.tar.gz \
+&& R CMD INSTALL mcmc_0.9-7.tar.gz
+RUN pip install rpy2==3.2.0
 
-# update alternatives to python3 (generally not what you should do, but it shouldn't be a problem in this container)
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+# Install Pyro
+RUN pip install torch
+RUN pip install pyro-ppl
 
-# set PYTHONIOENCODING to utf-8
-ENV PYTHONIOENCODING utf-8
+# Install PyMC4
+RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
 
-# change to new working directory
-WORKDIR /work
+# Install Jupyter
+RUN conda install -n ${conda_env} jupyter -y --quiet
+
+# create IPython kernel
+RUN python -m ipykernel install --user --name ${conda_env} --display-name "Samplers"
+

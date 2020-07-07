@@ -27,3 +27,15 @@ python test_PyMC4.py
 If you have [Matplotlib](https://matplotlib.org/) installed then the script will produce a plot of the posterior distributions
 on the straight line parameters $m$ and $c$.
 
+A Python 3 Docker image with PyMC4 installed is
+[available](https://hub.docker.com/r/mattpitkin/samplers/tags/), which can be used with:
+
+```bash
+docker run -it -v ${HOME}:/work mattpitkin/samplers:python3
+```
+
+to enter an interactive container, and then within the container the test script can be run with:
+
+```bash
+python test_pymc4.py
+```
