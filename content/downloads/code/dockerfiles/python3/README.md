@@ -1,7 +1,7 @@
 # Docker Image: Debian Buster, Python 3.7
 
 This Dockerfile is based on
-[`continuumio/miniconda3`](https://hub.docker.com/r/continuumio/miniconda3) and created a
+[`continuumio/miniconda3`](https://hub.docker.com/r/continuumio/miniconda3) and creates a
 `python3.7` conda environment.
 
 Within this environment it installs the following packages:
@@ -12,6 +12,7 @@ Within this environment it installs the following packages:
  * [dynesty](https://dynesty.readthedocs.io/en/latest/)
  * [edward2](https://github.com/google/edward2)
  * [emcee](https://emcee.readthedocs.io/en/stable/)
+ * [MC3](https://mc3.readthedocs.io/en/latest/index.html)
  * [Mici](https://matt-graham.github.io/mici/)
  * [Nestle](http://kylebarbary.com/nestle/)
  * [ptemcee](https://github.com/willvousden/ptemcee)

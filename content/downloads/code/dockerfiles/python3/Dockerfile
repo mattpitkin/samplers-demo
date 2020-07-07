@@ -117,6 +117,9 @@ RUN pip install pyro-ppl
 # Install PyMC4
 RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
 
+# Install MC3
+RUN pip install mc3
+
 # Install Jupyter
 RUN conda install -n ${conda_env} jupyter -y --quiet
 
