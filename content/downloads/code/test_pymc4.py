@@ -16,8 +16,7 @@ mpl.use("Agg") # force Matplotlib backend to Agg
 
 # import PyMC4
 import pymc4 as pm4
-import tensorflow as tf # For Random Variable operation
-from tensorflow_probability import edward2 as ed # For defining random variables
+import tensorflow as tf
 
 # import model and data
 from createdata import *
@@ -29,34 +28,36 @@ mmu = 0.      # mean of Gaussian distribution on m
 msigma = 10.  # standard deviation of Gaussian distribution on m
 
 # convert x values and data to tensors
-x = tf.convert_to_tensor(x, dtype=tf.float32)
-data = tf.convert_to_tensor(data, dtype=tf.float32)
+xtensor = tf.convert_to_tensor(x, dtype=tf.float32)
+datatensor = tf.convert_to_tensor(data, dtype=tf.float32)
 
-# PyMC4 specific model initialisation
-pymc4_linear_regression = pm4.Model(y=data, x=x, sigma=sigma, cmin=cmin, cmax=cmax,
-                                    mmu=0., msigma=10.)
-
-# create model
-@pymc4_linear_regression.define
-def process(cfg):
-    c = ed.Uniform(low=cfg.cmin, high=cfg.cmax, name="c")
-    m = ed.Normal(loc=cfg.mmu, scale=cfg.msigma, name="m")
-
-    y = ed.Normal(loc=(m*cfg.x+c), scale=np.float32(cfg.sigma), name="y")
-    return y
-
-# add observed data
-pymc4_linear_regression.observe(y=data)
+# model must be wrapped with the model decorator
+@pm4.model
+def model(x, data, sigma=sigma):
+    cvalue = yield pm4.Uniform(name='c', low=cmin, high=cmax)  # prior on c
+    mvalue = yield pm4.Normal(name='m', loc=mmu, scale=msigma) # prior on m
+    
+    # the straight line model
+    mu = cvalue + mvalue * x
+    
+    # the likelihood
+    yield pm4.Normal(name='t_obs', loc=mu, scale=sigma, observed=data)
 
 Nsamples = 2000  # final number of samples
 Nburn = 2000     # number of tuning samples
 
-pymc4_trace = pm4.sample(pymc4_linear_regression, num_results=Nsamples,
-                         num_burnin_steps=Nburn, step_size=0.01,
-                         num_leapfrog_steps=5)
+# perform the sampling
+pymc4_trace = pm4.sample(
+    model(xtensor, datatensor),
+    num_chains=1,
+    burn_in=Nburn,
+    num_samples=Nsamples,
+)
 
-postsamples = np.vstack((pymc4_trace['m'], pymc4_trace['c'])).T
-print(postsamples)
+postsamples = np.vstack((
+    pymc4_trace.posterior["model/m"].data.flatten(),
+    pymc4_trace.posterior["model/c"].data.flatten()
+)).T
 
 # plot posterior samples (if corner.py is installed)
 try:
