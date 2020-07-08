@@ -22,12 +22,8 @@ try:
 except ImportError:
     doplot = False
 
-# import UltraNest modules
-from nested_sampling.samplers.hiermetriclearn import MetricLearningFriendsConstrainer
-from nested_sampling.nested_integrator import nested_integrator
-from nested_sampling.nested_sampler import NestedSampler
-from nested_sampling.termination_criteria import TerminationCriterion
-from nested_sampling.postprocess import equal_weighted_posterior
+# import UltraNest
+import ultranest
 
 # import model and data
 from createdata import *
@@ -79,38 +75,31 @@ def loglikelihood_ultranest(theta):
 
     return norm - 0.5*chisq
 
-nlive = 1024      # number of live points
-ndims = 2         # two parameters
 tol = 0.5         # the stopping criterion
 
-# set "constrainer" for sampling the constrained prior
-constrainer = MetricLearningFriendsConstrainer(metriclearner='truncatedscaling', force_shrink=True, rebuild_every=50, verbose=False)
+# set the ReactiveNestedSampler method
+sampler = ultranest.ReactiveNestedSampler(
+    ["m", "c"], loglikelihood_ultranest, prior_transform_ultranest
+)
 
-# set termination condition
-termination = TerminationCriterion(tolerance=tol, maxRemainderFraction=0.001)
-
-# set the sampler
-sampler = NestedSampler(nlive_points=nlive, priortransform=prior_transform, loglikelihood=loglikelihood_ultranest, draw_constrained=constrainer.draw_constrained, ndim=ndims, constrainer_get_Lmax=constrainer.get_Lmax)
-
-constrainer.sampler = sampler
+tol = 0.5         # the stopping criterion
 
 # run the nested sampling algorithm
-result = nested_integrator(sampler, termination)
+result = sampler.run(dlogz=tol)
 
-logZultranest = result['logZ']        # value of logZ
-logZerrultranest = result['logZerr']  # estimate of the statistcal uncertainty on logZ
+logZultranest = result['logz']        # value of logZ
+logZerrultranest = result['logzerr']  # estimate of the statistcal uncertainty on logZ
 
 # output marginal likelihood
 print('Marginalised evidence is {} ± {}'.format(logZultranest, logZerrultranest))
 
-# get the posterior samples (first output is samples in the unit hypercube, so ignore that)
-nsamples = np.array([xi for ui, xi, Li, logwidth in result['weights']])
-probs = np.array([Li + logwidth for ui, xi, Li, logwidth in result['weights']])
-probs = np.exp(probs - probs.max())
+# get the posterior samples
+data = np.array(result["weighted_samples"]["points"])
+weights = np.array(result["weighted_samples"]["weights"])
+scaledweights = weights / weights.max()
+mask = np.random.rand(len(scaledweights)) < scaledweights
 
-keepidx = np.where(np.random.rand(len(probs)) < probs)[0]
-
-postsamples = nsamples[keepidx,:]
+samples_ultranest = data[mask, :]
 
 print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
