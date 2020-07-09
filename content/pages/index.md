@@ -13,9 +13,9 @@ The MCMC samplers used are:
    
 1. [emcee](http://dfm.io/emcee/current/)
 2. [PyMC3](http://docs.pymc.io/)
-3. [Edward](http://edwardlib.org)
-4. [TensorFlow Probability](https://www.tensorflow.org/probability/)
-5. [PyMC4](https://github.com/pymc-devs/pymc4/)
+3. [TensorFlow Probability](https://www.tensorflow.org/probability/)
+4. [PyMC4](https://github.com/pymc-devs/pymc4/)
+5. [Zeus](https://zeus-mcmc.readthedocs.io/en/latest/index.html)
 6. [PyStan](http://pystan.readthedocs.io/en/latest/)
 7. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
 
@@ -38,9 +38,9 @@ Standalone examples for each sampler can be found at the links below:
 
 * [emcee example](http://mattpitkin.github.io/samplers-demo/pages/emcee/)
 * [PyMC3 example](http://mattpitkin.github.io/samplers-demo/pages/pymc3/)
+* [Zeus example](http://mattpitkin.github.io/samplers-demo/pages/zeus/)
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
-* [Edward example](http://mattpitkin.github.io/samplers-demo/pages/edward/)
 * [TensorFlow Probability example](http://mattpitkin.github.io/samplers-demo/pages/tensorflow-probability/)
 * [PyMC4 example](http://mattpitkin.github.io/samplers-demo/pages/pymc4/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
@@ -69,8 +69,8 @@ and any problems/suggestions can be submitted as
 here.
 
 Also deserving thanks are: [Chris Pankow](https://github.com/cpankow) for spotting and fixing many typos and adding useful information to the
-[emcee section](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/#emcee) of the sampler demonstration page; and, [João Faria](https://github.com/j-faria) for spotting a problem with the DNest4 example
-and suggesting a fix.
+[emcee section](http://mattpitkin.github.io/samplers-demo/pages/samplers-samplers-everywhere/#emcee) of the sampler demonstration page; [João Faria](https://github.com/j-faria) for spotting a problem with the DNest4 example
+and suggesting a fix; and, [Johannes Buchner](https://github.com/JohannesBuchner) for useful information about effective sample sizes.
 
 ### The author
 

@@ -57,10 +57,9 @@ def do_sampling():
     qc = tf.random.uniform([], minval=cmin, maxval=cmax, name="init_c")
     qm = tf.random.normal([], stddev=msigma, mean=mmu, name="init_m")
 
-    hmc_kernel = tfp.mcmc.HamiltonianMonteCarlo(
+    hmc_kernel = tfp.mcmc.NoUTurnSampler(
         target_log_prob_fn=target_log_prob_fn,
         step_size=0.01,
-        num_leapfrog_steps=5,
     )
 
     return tfp.mcmc.sample_chain(

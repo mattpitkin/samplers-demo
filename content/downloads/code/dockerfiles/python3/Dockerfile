@@ -126,3 +126,5 @@ RUN conda install -n ${conda_env} jupyter -y --quiet
 # create IPython kernel
 RUN python -m ipykernel install --user --name ${conda_env} --display-name "Samplers"
 
+# Install CPU info package
+RUN pip install py-cpuinfo
