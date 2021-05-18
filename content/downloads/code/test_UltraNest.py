@@ -58,7 +58,7 @@ def prior_transform(theta):
 
     return np.array([m, c])
 
-def loglikelihood_ultranest(theta):
+def loglikelihood(theta):
     """
     The log-likelihood function.
     """
@@ -79,7 +79,7 @@ tol = 0.5         # the stopping criterion
 
 # set the ReactiveNestedSampler method
 sampler = ultranest.ReactiveNestedSampler(
-    ["m", "c"], loglikelihood_ultranest, prior_transform_ultranest
+    ["m", "c"], loglikelihood, prior_transform
 )
 
 tol = 0.5         # the stopping criterion
