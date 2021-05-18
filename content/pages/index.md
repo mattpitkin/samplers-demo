@@ -2,7 +2,7 @@ title: Samplers demo
 slug: index
 Template: index
 
-This site aims gives a demonstration of [fourteen different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
+This site aims gives a demonstration of [thirteen different](#Samplers) [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo)
 and [nested sampling](https://en.wikipedia.org/wiki/Nested_sampling_algorithm) algorithms that are
 either written in Python, or have Python-wrapper implementations. The demonstration is a simple toy
 model of estimating the posteriors on the parameters of a straight line in Gaussian noise of known variance.
@@ -12,12 +12,11 @@ model of estimating the posteriors on the parameters of a straight line in Gauss
 The MCMC samplers used are:
    
 1. [emcee](http://dfm.io/emcee/current/)
-2. [PyMC3](http://docs.pymc.io/)
-3. [TensorFlow Probability](https://www.tensorflow.org/probability/)
-4. [PyMC4](https://github.com/pymc-devs/pymc4/)
-5. [Zeus](https://zeus-mcmc.readthedocs.io/en/latest/index.html)
-6. [PyStan](http://pystan.readthedocs.io/en/latest/)
-7. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
+2. [TensorFlow Probability](https://www.tensorflow.org/probability/)
+3. [PyMC4](https://github.com/pymc-devs/pymc4/)
+4. [Zeus](https://zeus-mcmc.readthedocs.io/en/latest/index.html)
+5. [PyStan](http://pystan.readthedocs.io/en/latest/)
+6. [PyJAGS](https://pyjags.readthedocs.io/en/latest/)
 
 The nested sampling algorithms implementations uses are:
 
@@ -42,7 +41,6 @@ Standalone examples for each sampler can be found at the links below:
 * [PyStan example](http://mattpitkin.github.io/samplers-demo/pages/pystan/)
 * [PyJAGS example](http://mattpitkin.github.io/samplers-demo/pages/pyjags/)
 * [TensorFlow Probability example](http://mattpitkin.github.io/samplers-demo/pages/tensorflow-probability/)
-* [PyMC4 example](http://mattpitkin.github.io/samplers-demo/pages/pymc4/)
 * [Nestle example](http://mattpitkin.github.io/samplers-demo/pages/nestle/)
 * [CPNest example](http://mattpitkin.github.io/samplers-demo/pages/cpnest/)
 * [dynesty example](http://mattpitkin.github.io/samplers-demo/pages/dynesty/)
