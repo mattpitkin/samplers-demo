@@ -99,7 +99,7 @@ weights = np.array(result["weighted_samples"]["weights"])
 scaledweights = weights / weights.max()
 mask = np.random.rand(len(scaledweights)) < scaledweights
 
-samples_ultranest = data[mask, :]
+postsamples = data[mask, :]
 
 print('Number of posterior samples is {}'.format(postsamples.shape[0]))
 
