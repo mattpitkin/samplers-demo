@@ -83,6 +83,9 @@ RUN conda install -n ${conda_env} -c conda-forge ptemcee
 # Install PySTAN
 RUN conda install -n ${conda_env} -c conda-forge pystan
 
+# Install emcee
+RUN conda install -n ${conda_env} -c conda-forge emcee">=3.0"
+
 # Install bilby
 RUN conda install -n ${conda_env} -c conda-forge bilby
 
@@ -97,8 +100,6 @@ RUN pip install --upgrade setuptools
 RUN pip install ipykernel
 
 # Install samplers using pip
-# Install emcee (conda version is older for gcc7)
-RUN pip install --trusted-host pypi.python.org emcee
 
 # Install PyMC3 (conda version is older)
 RUN pip install --trusted-host pypi.python.org pymc3
