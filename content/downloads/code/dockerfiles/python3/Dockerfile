@@ -4,6 +4,9 @@ LABEL name="samplers-demo miniconda3" \
 maintainer="Matthew Pitkin <matthew.pitkin@ligo.org>" \
 date="20200205"
 
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH /opt/conda/bin:$PATH
+
 # copy stuff from continuumio docker file https://github.com/ContinuumIO/docker-images/blob/master/anaconda3/debian/Dockerfile
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends wget bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 git mercurial subversion && \
