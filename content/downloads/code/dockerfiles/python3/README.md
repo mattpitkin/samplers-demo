@@ -32,15 +32,7 @@ Within this environment it installs the following packages:
 
 ## Docker image
 
-The Dockerfile has been built, and [uploaded](https://hub.docker.com/r/mattpitkin/samplers/tags/) to
-DockerHub with:
-
-```bash
-sudo docker login
-sudo docker build -t samplers:python3 .
-sudo docker tag samplers:python3 mattpitkin/samplers:python3
-sudo docker push mattpitkin/samplers:python3
-```
+The Dockerfile image is available at [Quay.io](https://quay.io/repository/mattpitkin/samplers-demo).
 
 ## Examples
 
@@ -49,7 +41,7 @@ Assuming that you have downloaded this repository to the location
 with, e.g.,:
 
 ```bash
-docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/samplers mattpitkin/samplers:python3
+docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/samplers quay.io/mattpitkin/samplers-demo:latest
 > cd samplers
 > python test_emcee.py
 ```
@@ -57,7 +49,7 @@ docker run -it -v ${HOME}/repositories/samplers-demo/content/downloads/code:/sam
 You can run the sampler notebook by using:
 
 ```bash
-sudo docker run -i -t -p 8888:8888 -v ${HOME}/repositories/samplers-demo/content/downloads/notebooks:/samplers mattpitkin/samplers:python3 /bin/bash -c "jupyter notebook --notebook-dir=/samplers --ip='*' --port=8888 --no-browser --allow-root --MultiKernelManager.default_kernel_name=Samplers"
+sudo docker run -i -t -p 8888:8888 -v ${HOME}/repositories/samplers-demo/content/downloads/notebooks:/samplers quay.io/mattpitkin/samplers-demo:latest /bin/bash -c "jupyter notebook --notebook-dir=/samplers --ip='*' --port=8888 --no-browser --allow-root --MultiKernelManager.default_kernel_name=Samplers"
 ```
 
 This will allow access to all the files within the `samplers-demo/content/downloads/notebooks` within a directory
