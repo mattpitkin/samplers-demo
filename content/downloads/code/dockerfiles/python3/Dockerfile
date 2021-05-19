@@ -104,9 +104,6 @@ RUN pip install ipykernel
 # Install PyMC3 (conda version is older)
 RUN pip install --trusted-host pypi.python.org pymc3
 
-# Install PyJAGS
-RUN pip install --trusted-host pypi.python.org pyjags
-
 # Install YAPS
 RUN pip install --trusted-host pypi.python.org yaps
 
@@ -141,6 +138,9 @@ RUN pip install mc3
 # Add PolyChord
 RUN git clone https://github.com/PolyChord/PolyChordLite.git \
 && (cd PolyChordLite && python setup.py --no-mpi install)
+
+# Install PyJAGS
+RUN pip install --trusted-host pypi.python.org pyjags
 
 # Install Jupyter
 RUN conda install -n ${conda_env} jupyter -y --quiet
