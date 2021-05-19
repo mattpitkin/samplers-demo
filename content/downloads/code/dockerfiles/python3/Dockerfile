@@ -76,7 +76,7 @@ RUN pip install --upgrade setuptools
 RUN pip install ipykernel
 
 # Install samplers using pip
-# Install emcee (conda version is older)
+# Install emcee (conda version is older for gcc7)
 RUN pip install --trusted-host pypi.python.org emcee
 
 # Install PyMC3 (conda version is older)
@@ -90,10 +90,6 @@ RUN pip install --trusted-host pypi.python.org yaps
 
 # Install edward2 and TensorFlow Probability
 RUN pip install tensorflow-probability edward2
-
-# Add PolyChord
-RUN git clone https://github.com/PolyChord/PolyChordLite.git \
-&& (cd PolyChordLite && python setup.py --no-mpi install)
 
 # Install Sampyl
 RUN pip install sampyl-mcmc
@@ -119,6 +115,10 @@ RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
 
 # Install MC3
 RUN pip install mc3
+
+# Add PolyChord
+RUN git clone https://github.com/PolyChord/PolyChordLite.git \
+&& (cd PolyChordLite && python setup.py --no-mpi install)
 
 # Install Jupyter
 RUN conda install -n ${conda_env} jupyter -y --quiet
