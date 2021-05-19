@@ -56,12 +56,6 @@ RUN conda install -n ${conda_env} -c conda-forge pymultinest
 # Install DNest4
 RUN conda install -n ${conda_env} -c conda-forge dnest4
 
-# Install PyMC3
-RUN conda install -n ${conda_env} -c conda-forge pymc3
-
-# Install emcee
-RUN conda install -n ${conda_env} -c conda-forge emcee
-
 # Install ptemcee
 RUN conda install -n ${conda_env} -c conda-forge ptemcee
 
@@ -71,6 +65,9 @@ RUN conda install -n ${conda_env} -c conda-forge pystan
 # Install bilby
 RUN conda install -n ${conda_env} -c conda-forge bilby
 
+# Install zeus
+RUN conda install -n ${conda_env} -c conda-forge zeus-mcmc
+
 # Install pip-requirements
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
@@ -79,6 +76,12 @@ RUN pip install --upgrade setuptools
 RUN pip install ipykernel
 
 # Install samplers using pip
+# Install emcee (conda version is older for gcc7)
+RUN pip install --trusted-host pypi.python.org emcee
+
+# Install PyMC3 (conda version is older)
+RUN pip install --trusted-host pypi.python.org pymc3
+
 # Install PyJAGS
 RUN pip install --trusted-host pypi.python.org pyjags
 
@@ -87,13 +90,6 @@ RUN pip install --trusted-host pypi.python.org yaps
 
 # Install edward2 and TensorFlow Probability
 RUN pip install tensorflow-probability edward2
-
-# Add PolyChord
-RUN git clone https://github.com/PolyChord/PolyChordLite.git \
-&& (cd PolyChordLite && python setup.py --no-mpi install)
-
-# Install Zeus
-RUN pip install zeus-mcmc
 
 # Install Sampyl
 RUN pip install sampyl-mcmc
@@ -119,6 +115,10 @@ RUN pip install git+https://github.com/pymc-devs/pymc4.git#egg=pymc4
 
 # Install MC3
 RUN pip install mc3
+
+# Add PolyChord
+RUN git clone https://github.com/PolyChord/PolyChordLite.git \
+&& (cd PolyChordLite && python setup.py --no-mpi install)
 
 # Install Jupyter
 RUN conda install -n ${conda_env} jupyter -y --quiet
