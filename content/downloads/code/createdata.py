@@ -9,7 +9,7 @@ m = 3.5 # gradient of the line
 c = 1.2 # y-intercept of the line
 
 # set the "predictor variable"/abscissa
-M = 100
+M = 50
 xmin = 0.
 xmax = 10.
 stepsize = (xmax-xmin)/M
@@ -26,9 +26,9 @@ def straight_line(x, m, c):
         c (float): the y-intercept of the line
     """
     
-    return m*x + c
+    return m * x + c
 
 # create the data - the model plus Gaussian noise
-sigma = 0.5 # standard deviation of the noise
-data = straight_line(x, m, c) + sigma*np.random.randn(M)
+sigma = 2.0  # standard deviation of the noise
+data = straight_line(x, m, c) + np.random.normal(scale=sigma, size=M)
 
