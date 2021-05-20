@@ -116,13 +116,13 @@ Nsamples = 500  # number of final posterior samples
 argslist = (data, sigma, x)
 
 # set up the sampler
-sampler = zeus.sampler(Nens, ndims, logposterior, args=argslist)
+sampler = zeus.EnsembleSampler(Nens, ndims, logposterior, args=argslist)
 
 # pass the initial samples and total number of samples required
 sampler.run_mcmc(inisamples, Nsamples+Nburnin);
 
 # extract the samples (removing the burn-in)
-postsamples = sampler.get_chain(flatt=True, discrd=Nburnin)
+postsamples = sampler.get_chain(flat=True, discrd=Nburnin)
 
 # plot posterior samples (if corner.py is installed)
 try:
