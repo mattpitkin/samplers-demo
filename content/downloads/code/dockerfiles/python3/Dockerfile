@@ -1,7 +1,28 @@
-FROM continuumio/miniconda3
+FROM quay.io/jitesoft/debian:buster-slim
+
 LABEL name="samplers-demo miniconda3" \
 maintainer="Matthew Pitkin <matthew.pitkin@ligo.org>" \
 date="20200205"
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH /opt/conda/bin:$PATH
+
+# copy stuff from continuumio docker file https://github.com/ContinuumIO/docker-images/blob/master/anaconda3/debian/Dockerfile
+RUN apt-get update --fix-missing && \
+    apt-get install -y --no-install-recommends wget bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 git mercurial subversion && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    wget --quiet https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O ~/anaconda.sh && \
+    /bin/bash ~/anaconda.sh -b -p /opt/conda && \
+    rm ~/anaconda.sh && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc && \
+    find /opt/conda/ -follow -type f -name '*.a' -delete && \
+    find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
+    /opt/conda/bin/conda clean -afy
+
+CMD [ "/bin/bash" ]
 
 RUN conda update -n base -c defaults conda
 
@@ -62,6 +83,9 @@ RUN conda install -n ${conda_env} -c conda-forge ptemcee
 # Install PySTAN
 RUN conda install -n ${conda_env} -c conda-forge pystan
 
+# Install emcee
+RUN conda install -n ${conda_env} -c conda-forge emcee">=3.0"
+
 # Install bilby
 RUN conda install -n ${conda_env} -c conda-forge bilby
 
@@ -76,8 +100,6 @@ RUN pip install --upgrade setuptools
 RUN pip install ipykernel
 
 # Install samplers using pip
-# Install emcee (conda version is older for gcc7)
-RUN pip install --trusted-host pypi.python.org emcee
 
 # Install PyMC3 (conda version is older)
 RUN pip install --trusted-host pypi.python.org pymc3
