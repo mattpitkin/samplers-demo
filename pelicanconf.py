@@ -37,10 +37,10 @@ PLUGIN_PATHS = ['./plugins/pelican-plugins']
 PLUGINS = [
     'summary',       # auto-summarizing articles
     'feed_summary',  # use summaries for RSS, not full articles
-    'pelican-ipynb.liquid',  # for embedding notebooks
     'liquid_tags.img',  # embedding images
     'liquid_tags.include_code',  # including code blocks
-    'liquid_tags.literal'
+    'liquid_tags.literal',
+    'pelican-ipynb.liquid',  # for embedding notebooks
 ]
 IGNORE_FILES = ['.ipynb_checkpoints', 'README.md']
 
