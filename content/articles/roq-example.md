@@ -4,4 +4,4 @@ comments: true
 slug: roq-example
 tags: Reduced Order Quadrature, ROQ, Reduced Order Modelling, ROM
 
-{% notebook downloads/notebooks/ROQ.ipynb cells[1:] %}
+{% notebook downloads/notebooks/ROQ.ipynb cells[2:] %}
