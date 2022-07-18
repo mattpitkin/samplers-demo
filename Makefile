@@ -94,6 +94,8 @@ pages-submodule: publish
 
 publish-to-github: pages-submodule
 	cd $(PAGES_SUBMODULE) && git pull --rebase && git push origin $(GITHUB_PAGES_BRANCH)
+	# clean out any generated pages
+	cd $(BASEDIR) && git clean -dxf
 
 # remove the use of ghp-import by having gh-pages repo as a submodule
 #publish-to-github: publish
