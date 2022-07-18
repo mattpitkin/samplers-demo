@@ -2,5 +2,12 @@ Dockerfiles/*/MultiNest_v3.10_CMake.tar.gz
 Dockerfiles/*/PolyChord_v1.9.tar.gz
 chain*.txt
 examples/*.png
-examples/polychord
-examples/__pycache__
+examples/polychord/*
+examples/__pycache__/*
+output/*
+__pycache__/*
+Samplers_files/*
+polychord/*
+posterior.dat
+header.txt
+Samplers.html

@@ -1,0 +1,13 @@
+bilby/*
+chain*
+cpnest.log
+header.txt
+.ipynb_checkpoints/*
+levels.txt
+log_prior_weights.txt
+nested_samples.dat
+polychord/*
+posterior*
+sample*
+weights.txt
+.Trash-0/*

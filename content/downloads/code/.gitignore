@@ -1,0 +1,14 @@
+chain*
+cpnest.log
+createdata.pyc
+header.txt
+levels.txt
+log_prior_weights.txt
+nested_samples.dat
+polychord/*
+posterior_sample.txt
+__pycache__/*
+sample_info.txt
+sampler_state.txt
+sample.txt
+weights.txt
